@@ -1,0 +1,382 @@
+%Szablon przygotowany przez mgr Marcina Hanca, ze zmianami dr inż. Michała Rena
+
+\documentclass[12pt,a4paper,leqno,oneside,titlepage]{book}
+
+% Wczytanie pakietów: kodowania, czcionki i języki.
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage[english,polish]{babel}
+% Wczytanie pakietu 'polski' w celu zapewnienia polskich nazw.
+\usepackage{polski}
+% Czcionki matematyczne.
+\usepackage{amsfonts}
+\usepackage{amsmath}
+% Pakiet dodający rumuńskie znaki specjalne -- z przecinkiem pod literą.
+\usepackage{combelow}
+
+% Ładne początki rozdziałów (pakiet fncychap).
+% Polecam Sonny i Conny. Bjornstrup najładniejszy, ale mi się bugował.
+\usepackage[Sonny]{fncychap}
+% Ładne i klikalne odnośniki.
+\usepackage{url}
+% Odnośniki dla adresów z polskimi znakami.
+\usepackage[]{hyperref}
+% Możliwość tworzenia łączonych pól (wg. rzędów) w tabelach.
+\usepackage{multirow}
+% Pakiet do cytowania kodów źródłowych.
+\usepackage{listings}
+% Pakiet do ładnego wstawiania grafik.
+\usepackage{graphicx}
+% Pakiet dodający możliwość wstawienia rozdziału "Akronimy".
+\usepackage{acronym}
+% Pakiet dodający kolory
+\usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
+% Pakiet rozwiązujący problem z underscore w Section.
+\usepackage[T1]{fontenc}
+% Pakiet dodający definicje i twierdzenia.
+\usepackage{amsthm}
+
+\frenchspacing
+
+\author{Tu wpisz imię i nazwisko studencie!}
+\title{Tu wpisz tytuł pracy inżynierskiej/licencjackiej/magisterskiej}
+
+% \imod{k} Ładny zapis dzielenia modulo.
+\makeatletter
+\def\imod#1{\allowbreak\mkern10mu({\operator@font mod}\,\,#1)}
+\makeatother
+
+% \rom{n} Liczba n zapisana rzymsko.
+\makeatletter
+\newcommand*{\rom}[1]{\expandafter\@slowromancap\romannumeral #1@}
+\makeatother
+
+% Własne definicje.
+% \begin{mydef}
+%     Treść definicji.
+% \end{mydef}
+\newtheorem{mydef}{Definicja}
+
+% Ładny sposób wstawiania cytatu rozpoczynającego rozdział.
+% \begin{chapquote}{KTO}
+%     CO ONA POWIEDZIAŁA?
+% \end{chapquote}
+\makeatletter
+\renewcommand{\@chapapp}{}
+\newenvironment{chapquote}[2][2em]
+  {\setlength{\@tempdima}{#1}%
+   \def\chapquote@author{#2}%
+   \parshape 1 \@tempdima \dimexpr\textwidth-2\@tempdima\relax%
+   \itshape}
+  {\par\normalfont\hfill--\ \chapquote@author\hspace*{\@tempdima}\par\bigskip}
+\makeatother
+
+% Zmiana tekstów w listingach kodów źródłowych na j. polski.
+\renewcommand\lstlistingname{Kod źródłowy}
+\renewcommand\lstlistlistingname{Spis kodów źródłowych}
+
+% Redefinicja Abstract'ów.
+% W celu możliwości wstawienia dwóch na jedną stronę.
+\newenvironment{abstractpage}
+  {\cleardoublepage\vspace*{\fill}\thispagestyle{empty}}
+  {\vfill\cleardoublepage}
+\newenvironment{abstract}[1]
+  {\bigskip\selectlanguage{#1}%
+   \begin{center}\bfseries\abstractname\end{center}}
+  {\par\bigskip}
+
+% Dodatkowe definicje stylu stron.
+\lstset{
+  basicstyle={\small\ttfamily},
+  breaklines=true,
+  columns=flexible
+}
+
+\setlength{\oddsidemargin}{0.5in}
+\setlength{\textwidth}{5.7in}
+\setlength{\topmargin}{0in}
+\setlength{\textheight}{8.5in}
+\linespread{1.05}
+
+% Tu rozpoczyna się zawartość pracy!
+\begin{document}
+
+% Strona tytułowa zgodna z wymaganiami:
+% http://www.wmi.amu.edu.pl/pl/prace-dyplomowe
+\begin{titlepage}
+\let\footnotesize\small
+\let\footnoterule\relax
+\let \footnote \thanks
+
+\begin{center}
+{\large \bf Uniwersytet im. Adama Mickiewicza w Poznaniu \\ Wydział Matematyki i~Informatyki \par}
+\vspace{0.5cm plus 1mm minus 2mm}
+{{\bf Informatyka} \\%(Tu wpisz swój kierunek studiów)
+\small Informatyka taka i owaka\par}%(Tu wpisz specjalizację jeśli ją masz)
+\end{center}%
+
+\vspace{1.5cm plus 1fill}
+\begin{flushleft}
+{\center {\bf \Large Imiona i nazwisko} \\ \normalsize Nr albumu: \bf 999999\par}%(Tu wpisz swoje dane)
+\end{flushleft}
+\vspace{1.5cm plus 1mm minus 2mm}
+
+\begin{center}
+{\huge\textbf{Tytuł pracy}\par}%(Tu wpisz tytuł pracy -- taki jak na porozumieniu i w systemie pd.wmi.amu.edu.pl)
+\vspace{0.5cm plus 1mm minus 2mm}
+{\large Title in English}%(Tu wpisz angielski tytuł pracy -- taki jak na porozumieniu i w systemie pd.wmi.amu.edu.pl)
+\par
+\vspace{1.5cm plus 1.5fill}
+
+\begin{flushright}\large
+\begin{tabular}{l}
+Praca magisterska\\[3pt]
+\MakeUppercase{ }\\[3pt]
+Promotor: \\[3pt]
+\bfseries dr inż. Michał Ren \\[3pt]
+\end{tabular}
+\end{flushright}
+\vspace{4cm plus .1fill}
+{\large 2020\par}%Tu wpisz rok oddania pracy
+\end{center}
+\end{titlepage}
+
+% Zgłoszenie braku numerowania kolejnych stron.
+\pagenumbering{gobble}
+
+\begin{flushright}{
+Poznań, dnia .....................
+}\end{flushright}
+\begin{center}{
+\par
+\vspace{1.5cm plus 1.5fill}
+{\large OŚWIADCZENIE}
+}\end{center}
+\par
+\vspace{1.5cm plus 1.5fill}%(Nie zapomniej tu wpisać danych osobowych i tytułu pracy. Wyrażanie zgody na udostępnianie pracy jest dobrowolne.)
+Ja, niżej podpisany IMIONA NAZWISKO student Wydziału Matematyki i~Informatyki Uniwersytetu im. Adama Mickiewicza w Poznaniu oświadczam, że przedkładaną pracę dyplomową pt: ,,TYTUŁ PRACY'' napisałem samodzielnie. Oznacza to, że przy pisaniu pracy, poza niezbędnymi konsultacjami, nie korzystałem z pomocy innych osób, a~w~szczególności nie zlecałem opracowania rozprawy lub jej części innym osobom, ani nie odpisywałem tej rozprawy lub jej części od innych osób.\\
+
+Oświadczam również, że egzemplarz pracy dyplomowej w~wersji drukowanej jest całkowicie zgodny z~egzemplarzem pracy dyplomowej w~wersji elektronicznej.\\
+
+Jednocześnie przyjmuję do wiadomości, że przypisanie sobie, w~pracy dyplomowej, autorstwa istotnego fragmentu lub innych elementów cudzego utworu lub ustalenia naukowego stanowi podstawę  stwierdzenia  nieważności postępowania w~sprawie nadania tytułu zawodowego.\\
+
+Wyrażam zgodę na udostępnianie mojej pracy w czytelni Archiwum UAM.\\
+
+Wyrażam zgodę na udostępnianie mojej pracy w zakresie koniecznym do ochrony mojego prawa do autorstwa lub praw osób trzecich.
+\par
+\vspace{1.5cm plus 1.5fill}
+\begin{center}{
+..............................................\\
+{\footnotesize(czytelny podpis studenta)}
+}\end{center}
+
+\newpage
+
+\phantom{.}
+
+%Zastanów się komu chcesz podziękować; oczywiście dla siebie możesz stworzyć wiele wersji pracy z różnymi podziękowaniami dla rodziny, znajomych, szefa... Te podziękowania są przykładem i naprawdę możesz coś z siebie wykrzesać.
+\vspace{12cm} \hspace{1cm}\phantom{.}\\
+\phantom{.}\hspace{5cm}{Składam serdeczne podziękowania}\\
+\phantom{.}\hspace{5cm}{dr inż. Michałowi Renowi }\\
+\phantom{.}\hspace{5cm}{za jego nieocenioną pomoc }\\
+\phantom{.}\hspace{5cm}{przy pisaniu tej pracy.}\\
+\phantom{.}\hspace{5cm}{}\\
+\phantom{.}\hspace{5cm}{Dziękuję także serdecznie mojej rodzinie}\\
+\phantom{.}\hspace{5cm}{bez której cierpliwości, wsparcia, pomocy}\\
+\phantom{.}\hspace{5cm}{praca ta nie mogłaby powstać.}\\
+
+\newpage
+% Przód pracy - spisy i abstrakty.
+\frontmatter
+% Spis treści ze specjalnym uwzględnieniem podkreśleń w tytułach sekcji.
+\pagestyle{plain}
+{
+    \catcode`\_=12
+    \tableofcontents
+} 
+% Spis ilustracji -- możesz mieć, ale nie musisz.
+\listoffigures
+% Spis tabeli -- możesz mieć, ale nie musisz.
+\listoftables
+% Spis listingów kodów źródłowych -- możesz mieć, ale nie musisz.
+\begingroup
+\let\clearpage\relax
+\lstlistoflistings
+\endgroup
+
+% Strona z abstraktami.
+\begin{abstractpage}
+% Abstrakt w języku polskim.
+\begin{abstract}{polish}
+Streszczenie wstępu jest dobrym pomysłem na początek abstraktu. Dobre praktyki tworzenia abstraktów znajdują się np. na stronie\footnote{
+\url{http://www.editage.com/insights/how-to-write-an-effective-title-and-abstract-and-choose-appropriate-keywords}}.
+Wczuj się w rolę informatyka, który będzie czytał sam abstrakt, żeby zdecydować, czy reszta pracy mu się przyda. Zwięzłość jest w cenie, niemniej jednak trzeba się starać opisać o czym głównie jest praca, jak również co jest w tej pracy szczególnego, czego nie można znaleźć w innych. Zwykle abstrakt pisze się po napisaniu pracy, myśląc o takich kwestiach jak np. ,,jaki problem próbowano rozwiązać'', ,,jaka była motywacja skupienia się nad tym problemem'', ,,za pomocą jakich środków cel został osiągnięty''. Wiele abstraktów różnego rodzaju prac można obejrzeć w Internecie.
+\end{abstract}
+\smallskip
+\noindent \textbf{Słowa~kluczowe:} praca dyplomowa, wzór, przewodnik
+
+%Abstrakt w języku angielskim.
+\begin{abstract}{english}
+Translation of your Polish abstract. Some leeway is allowed, but make sure it is a translation, not a completely different abstract. If you have a problem with English, ask your supervisor to help you translate. Machine translations (e.g. Google translate) are not good enough (yet...) to be acceptable.
+\end{abstract}
+\smallskip
+\noindent \textbf{Keywords:} thesis, template, guide
+\end{abstractpage}
+
+% Finally - PRACA!
+\mainmatter
+
+% Wstęp jest uwzględniony w spisie treści jako rozdział bez numeru.
+\addcontentsline{toc}{chapter}{Wstęp}
+\chapter*{Wstęp}
+
+Krótkie omówienie tego, o czym będzie praca. (Czyli co zostanie w pracy powiedziane.)
+
+Rzeczy które tu można ująć to np. 
+\begin{itemize}
+\item mini-przewodnik po własnych wynikach, czy że zrobiono to, tamto i owamto
+\item motywacja do pracy, czyli dlaczego się tym zajęto i dlaczego masa rzeczy już na ten temat napisanych nie wystarczyła do szczęścia
+\item omówienie struktury pracy, czyli w tym rozdziale jest to, a tym owo
+\item historia badań na podobnymi tematami i aktualny stan wiedzy
+\end{itemize}
+
+Ilu autorów, tyle wstępów\ldots{} Nie traktuj powyższych elementów jako obowiązkowe.
+
+\chapter{Typowy rozdział}%Na końcu tytułów rozdziałów i podrozdziałów nie stawiamy kropek.
+
+Niektóre, doktrynerskie szkoły mówią, że praca powinna mieć dokładnie trzy rozdziały (i do tego oczywiście wstęp, zakończenie, bibliografię itd.). Lepiej, żeby rozdziałów było tyle ile trzeba, czyli nie za dużo i nie za mało. Jako że rozdziały to największe kawałki pracy, myślę, że jeśli miałoby ich być więcej niż siedem, to należy się zastanowić, czy nie da się pogrupować niektórych treści i umieścić je pod wspólnym parasolem. Najważniejsze by podział między rozdziały dobrze odzwierciedł treści jakie się w tych rozdziałach zawiera. W tym szablonie nie jest to zrobione dobrze\ldots{}
+
+\section{Podrozdział o bibliografii}
+
+Podrozdziały mogą czytelnikowi ułatwić przyswajanie pracy -- hierarchicznie uporządkowaną treść lepiej się czyta.
+
+% Wstawianie ilustracji o określonej szerokości.
+\begin{figure}[h!]
+  % Centrowanie obrazu w poziomie.
+  \centering
+    \includegraphics[width=0.35\textwidth]{logo_wersja-podstawowa_granat_1.jpg}
+  % Warto podawać źródło -- np. z pomocą cite w podpisie; jeśli się samemu narysowało rysunek, to można napisać Źródło: praca własna; jeśli się narysowało coś na podstawie informacji z jakiegoś źródła, można napisać Źródło: praca własna na podstawie \cite{PozycjaBibliografii}.
+  \caption{To jest logo UAM. Źródło: System Identyfikacji Wizualnej UAM \cite{SIW}}
+\end{figure}
+
+Dobrze jest cytować artykuły naukowe tak, żeby stwierdzenia zawarte w pracy, które nie są wynikiem oryginalnych myśli autora zawierały do nich odniesienie. Są różne szkoły cytowania, ale w informatyce przyjęło się, że bibliografię umieszczamy na końcu pracy numerując, a w tekście piszemy numer w nawiasie kwadratowym, np. tak [99]. Nie umieszczamy bibliografii w przypisach dolnych\footnote{To jest przypis dolny.} -- one służą raczej wyjaśnianiu różnych pojęć itp.
+
+Na szczęście \LaTeX{} dużo sam robi -- w bibliografii (patrz plik bibliografia.bib) umieszczamy swoje pozycje bibliograficzne, a w pracy odwołujemy się do nich przez nazwy które sami im nadaliśmy. \LaTeX{} sam się zatroszczy w jakim stylu zacytować. W obecnej bibliografii jest kilka przykłądów, np. książka ,,\textit{Kryptografia i bezpieczeństwo sieci komputerowych. Matematyka szyfrów i techniki kryptologii}''\cite{Stallings11kryptografia}, strona internetowa ,,\textit{Seminarium ZATABEDA}''\cite{Gogolewski13seminarium}, artykuł zamieszczony w Internecie ,,\textit{How to write an effective title and abstract and choose appropriate keywords}''\cite{Rodrigues13howtowrite}, wiadomość z grup dyskusyjnych ,,\textit{Random numbers for C: The END?}''\cite{Marsaglia99randomnum} i prezentacja lub wykład zamieszczone w Internecie ,,\textit{Szumy pseudolosowych map.}''\cite{Hanc15szumy}.\\
+
+Wiele źródeł internetowych, szczególnie prac naukowych, już zawiera informację bibliograficzną w formacie \LaTeX{}a, którą można wkleić do swojego pliku z bibliografią.
+
+Jeśli samemu znajdujesz źródła w Internecie, pamiętaj że trzeba podać autora, tytuł, rok publikacji, informacje wystarczające do znalezienia źródła, etc. Czasem ,,autor'' jest umowny, np. może to być instytucja.
+
+\section{Kilka przykładów typografii}
+
+% Lista nienumerowana.
+\begin{itemize}
+\item \textbf{Wymieniany} -- element może mieć zagnieżdżenia:
+    \begin{itemize}
+    \item \textbf{Przykład}, faktycznie tu jest zagnieżdżenie.
+    \end{itemize}
+\end{itemize}
+
+% Własna definicja
+\begin{mydef}
+\textbf{Można pogrubić nazwę określanego pojęcia} aby było jasne co definiujemy.
+\end{mydef}
+
+\chapter{Inny rozdział}
+
+% Ilustracje mogą zawierać naraz kilka plików.
+% Pamiętaj o podawaniu źródła wykorzystywanych obrazów.
+% Nawet jeśli stworzyłaś/-eś reprodukcję.
+\begin{figure}[h!]
+  \centering
+    \includegraphics[height=0.3\textheight]{PM5544_with_non-PAL_signals.png}
+    \includegraphics[height=0.3\textheight]{logo_wersja-uzupeniajca_czarny_2.pdf}
+  \caption{Obrazki rastrowe i wektorowe}
+\end{figure}
+
+Rysunek 2.1 pochodzi z takiej tam strony\footnote{\url{http://siw.amu.edu.pl/siw/strona-glowna/strona-glowna}}.
+
+\section{Znów podrozdział}
+
+Przykład inline'owego trybu matematycznego: $X_{n+1} = a X_n + c \imod{m}$.
+
+\subsection{Ostatni poziom zagłębienia uwzględniany w domyślnym spisie treści.}
+
+% Cytat na wstęp sekcji.
+\begin{chapquote}{Marcin Mateusz Hanc}
+Gracze na szczęście nie przejmowali się dotarciem do ,,końca świata'' \cite{Hanc15szumy}
+\end{chapquote}
+
+% Przykład tabeli z danymi.
+\begin{table}[h]
+\centering
+\label{tab:RNG_examples}
+\begin{tabular}{l|c}
+ Nagłówek & Coś innego \\
+ \hline \hline
+ Pierwszy rząd & 100 \\
+ \hline
+ Rząd & \multirow{2}{*}{TAK} \\
+ podwójny & \\
+\end{tabular}
+\caption{Przykładowa tabela}
+\end{table}
+
+% Przykład wstawienia listingu kodu w języku C++ z podpisem.
+\lstinputlisting[language=C++, captionpos=b, belowcaptionskip=4pt, caption={Ułamkowy Ruch Browna}]{fBm.cpp}
+
+\section{Sekcja ze znakiem \_ działa}
+
+% Wyliczenie elementów.
+\begin{enumerate}
+\item Elementy mogą być dłuższe niż jedna linia.
+
+FAKTYCZNIE.
+
+\item Drugi element.
+
+\end{enumerate}
+
+\chapter{Typografia -- dobre rady}
+
+Należy w~pracy uważać, żeby jednoliterowe wyrazy takie jak ,,i'', ,,a'', etc. nie kończyły linii. Można to łatwo uzyskać pisząc \textasciitilde (znak tyldy) za taką literką. Znak tyldy oznacza spację, której nie wolno dzielić; w~innych przypadkach w~których chcielibyśmy tego uniknąć, też można ten trick stosować. W~tym akapicie jest to praktykowane, żeby pokazać technikę, a~w~całej reszcie szablonu -- nie. Niestety, póki \LaTeX{} nie zmądrzeje, trzeba to wszędzie ręcznie robić.
+
+Proszę pamiętać o różnicy różnicy między dywizem, myślnikiem i półpauzą. Otóż -- jak to zresztą widać w innych miejscach w szablonie -- trzeba używać dwóch kresek do oznaczenia ,,myślnika'' w zdaniu. W tradycyjnej polskiej typografii myślnik to ---, a znak -- to tzw. półpauza, jednak zaczyna ona wypierać myślnik i jest dziś powszechnie używana zamiast niego, więc tak radzę pisać. Pojedynczej kreski w \LaTeX{}u używamy np. w zakresach (strony 1-10), albo złożeniach typu czerwono-czarne.
+
+Wyrazy obcojęzyczne, można oznaczać kursywą -- przykładowo kiedy się pisze np. o własności \textit{non-repudiation}. Niektóre terminy można też doprecyzować podając w nawiasie źródło (ang. \textit{source}).
+
+W języku polskim, cudzysłów otwierający pisze się inaczej niż zamykający, a w \LaTeX{}u pisze się je ,,tak''.
+
+Zanim pracę odda się promotorowi, warto ją przeczytać. Niestety, mózg autora buntuje się często wobec próby czytania po raz n-ty czegoś, co sam wymyślił. Radzę więc czytać na głos i się nagrać, a promotorowi wysłać audiobooka. Niektóre błędy wynikające z wielokrotnej edycji można wtedy wyłapać.
+
+Na wszelki wypadek, należy też zajrzeć na stronę wydziału \cite{WMIdyplom} i sprawdzić, czy nie zmieniły się wymagania dotyczące pracy dyplomowej. (W razie wątpliwości można też dziekanat pytać o różne szczegóły.) Wyrocznią jest dziekanat, a nie ten szablon!
+
+\addcontentsline{toc}{chapter}{Zakończenie}
+\chapter*{Zakończenie}
+
+Tak jak we wstępie pisało się o czym będzie praca, tak w zakończeniu pisze się o czym praca była. W zakończeniu podaje się często pomysły na dalsze badania w danym kierunku, ale jeśli takich pomysłów jest więcej lub są szczegółowe, to czasami robi się to w całym rozdziale przed zakończeniem.
+
+\newpage
+% Dodanie wpisu Bibliografia do Spisu Treści.
+\addcontentsline{toc}{chapter}{Bibliografia}
+% Styl bibliografii: unsrt lub plain
+\bibliographystyle{plain}
+\bibliography{bibliografia}
+
+% W przypadku dodawania dodatków:
+\appendix
+\addcontentsline{toc}{chapter}{Dodatki}
+
+% Pojedynczy dodatek
+\addcontentsline{toc}{section}{Dodatek A: Cośtam dodatkowego}
+\chapter*{Dodatek A: Cośtam dodatkowego}
+
+Dodatki zawierają treści, których zrozumienie nie jest konieczne do zrozumienia pracy i które mogłyby niepotrzebnie zajmować miejsce. Czasem są to listingi programów -- może np. w pracy wystarczą krótkie fragmenty do których się akurat odnosimy, a w dodatku może być cały kod źródłowy, itp.
+
+% Spis akronimów użytych w pracy -- można mieć, ale nie trzeba; większość prac nie ma.
+\chapter*{Akronimy}
+\begin{acronym}
+\acro{KISS}{Keep It Simple Stupid}
+\acro{IT}{Information Technology}
+\end{acronym}
+\end{document}
