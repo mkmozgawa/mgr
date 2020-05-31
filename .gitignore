@@ -1,0 +1,11 @@
+testing/
+.ipynb_checkpoints/
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.snm
+*.synctex.gz
+*.toc
