@@ -33,23 +33,10 @@
     \section{Systemy przetwarzania obrazu w życiu codziennym}
 
         \subsection{Czym jest obraz?}
-            \begin{frame}
-                \begin{center}
-                    \frametitle{Jak widzą ludzie?}
-                    \includegraphics[width=0.8\textwidth]{pictures/wavelength.png}
-                \end{center}
-            \end{frame}
 
             \begin{frame}
                 \begin{center}
-                    \frametitle{Jak widzą ludzie?}
-                    \includegraphics[width=0.8\textwidth]{pictures/apple.jpg}
-                \end{center}
-            \end{frame}
-
-            \begin{frame}
-                \begin{center}
-                    \frametitle{Jak zapisać obraz?}
+                    \frametitle{Obraz jako dwuwymiarowy rzut trójwymiarowej rzeczywistości}
                     \includegraphics[height=0.8\textheight]{pictures/Lenna.png}
                 \end{center} 
             \end{frame}
@@ -72,7 +59,7 @@
 
             \begin{frame}
                 \frametitle{Czym jest przetwarzanie obrazu}
-                Przetwarzanie obrazu (computer vision): dziedzina zajmująca się rozwojem technik pozwalających na odzyskiwanie ze zdjęć trójwymiarowego wyglądu obiektów*
+                Przetwarzanie obrazu (computer vision): dziedzina zajmująca się rozwojem technik pozwalających na odzyskiwanie ze zdjęć trójwymiarowego wyglądu obiektów [A1]
             \end{frame}
 
             \begin{frame}
@@ -83,7 +70,7 @@
                     \item autonomiczne pojazdy
                     \item wspomaganie osób z niepełnosprawnościami
                     \item rozpoznawanie dźwięku
-                    \item w dronach - patrolowanie zbiorów, poszukiwania ludzi w pożarach, zawalonych budynkach, itp
+                    \item w dronach - patrolowanie zbiorów, poszukiwania ludzi w pożarach, zawalonych budynkach, itp [A1]
                 \end{itemize}
             \end{frame}
 
@@ -111,7 +98,7 @@
                             \end{center}
                         \end{column}
                         \begin{column}{0.5\textwidth}
-                            Clearview AI has expanded to at least 26 countries outside the US, engaging national law enforcement agencies, government bodies, and police forces in Australia, Belgium, Brazil, Canada, Denmark, Finland, France, Ireland, India, Italy, Latvia, Lithuania, Malta, the Netherlands, Norway, Portugal, Serbia, Slovenia, Spain, Sweden, Switzerland, and the United Kingdom.*
+                            Clearview AI has expanded to at least 26 countries outside the US, engaging national law enforcement agencies, government bodies, and police forces in Australia, Belgium, Brazil, Canada, Denmark, Finland, France, Ireland, India, Italy, Latvia, Lithuania, Malta, the Netherlands, Norway, Portugal, Serbia, Slovenia, Spain, Sweden, Switzerland, and the United Kingdom. [B2]
                         \end{column}
                     \end{columns}
                 \end{center}
@@ -143,10 +130,11 @@
                     \begin{column}{0.5\textwidth}
                         \begin{center}
                             \includegraphics[width=1\textwidth]{pictures/gradient.png}
+                        \end{center}
                             Wielkość wektora gradientu: $\sqrt{\left( f^{2}_{x}+f^{2}_{y}\right)}$.
                             \newline
+                            \newline
                             Kąt wektora gradientu: $\arctan{\frac{f_{y}}{f_{x}}}$.
-                        \end{center}
                     \end{column}
                     \begin{column}{0.5\textwidth}
                         \begin{center}
@@ -241,25 +229,72 @@
                 \end{center}
             \end{frame}
 
-    \section{Jak zdezorientować gradienty?}
+    \section{Atak: jak zdezorientować gradienty?}
 
-        \subsection{Po co oszukiwać?}
             \begin{frame}
                 \frametitle{Czasami gradienty same się dezorientują}
                 \begin{center}
                     \begin{figure}
-                        \includegraphics[height=0.8\textheight]{pictures/vondrick_duck.png}
-                        \caption{Czy ta kaczka wcale nie jest kaczką?}    
+                        \includegraphics[height=0.75\textheight]{pictures/vondrick_duck.png}
+                        \caption{Czy ta kaczka wcale nie jest kaczką? [A3]}
                     \end{figure}
                 \end{center}
             \end{frame}
 
+            \begin{frame}
+                \frametitle{Twarz klasyfikatora}
+                \begin{center}
+                    \begin{figure}
+                        \includegraphics[height=0.75\textheight]{pictures/hog.png}
+                        \caption{HOG: wizualizacja "twarzy człowieka" z biblioteki dlib [C2]}
+                    \end{figure}
+                \end{center}
+            \end{frame}
+
+            \begin{frame}
+                \frametitle{Rozpoznawanie twarzy z biblioteką dlib}
+                \begin{columns}
+                    \begin{column}{0.5\textwidth}
+                        \begin{center}
+                            \includegraphics[width=0.9\textwidth]{pictures/face_detected}
+                        \end{center}
+                    \end{column}
+                    \begin{column}{0.5\textwidth}
+                        \begin{center}
+                            \includegraphics[width=0.9\textwidth]{pictures/face_unsplash_mask}
+                        \end{center}
+                    \end{column}
+                \end{columns}
+            \end{frame}
+
+            \begin{frame}
+                \frametitle{Rozpoznawanie twarzy z biblioteką dlib}
+                \begin{columns}
+                    \begin{column}{0.5\textwidth}
+                        \begin{center}
+                            \includegraphics[width=0.9\textwidth]{pictures/face_unsplash_two_hogs}
+                        \end{center}
+                    \end{column}
+                    \begin{column}{0.5\textwidth}
+                        \begin{center}
+                            \includegraphics[width=0.9\textwidth]{pictures/face_unsplash_two_hogs_detected}
+                        \end{center}
+                    \end{column}
+                \end{columns}
+            \end{frame}
+
+            \begin{frame}
+                \frametitle{Zastosowanie w praktyce}
+                \begin{center}
+                    \includegraphics[height=0.8\textheight]{pictures/protest_faces_hogs}
+                \end{center}
+            \end{frame}
 
     \section{Podsumowanie}
 
         \subsection{Źródła}
             \begin{frame}
-                \frametitle{Źródła naukowe}
+                \frametitle{Źródła naukowe (A)}
                 \begin{enumerate}
                     \item Szeliski, R. "Computer Vision: Algorithms and Applications". Springer: 2010.
                     \item Dalal, N., Triggs, B. "Histogram of Oriented Gradients for Human Detection". [In proceedings] IEEE Computer Society Conference on Computer Vision and Pattern Recognition: 2005.
@@ -268,12 +303,22 @@
             \end{frame}
 
             \begin{frame}
-                \frametitle{Źródła prasowe}
+                \frametitle{Źródła prasowe (B)}
                 \begin{enumerate}
-                    \item
-                        url{https://www.nytimes.com/2020/01/18/technology/clearview-privacy-facial-recognition.html}
-                    \item 
-                        url{https://www.buzzfeednews.com/article/ryanmac/clearview-ai-fbi-ice-global-law-enforcement}
+                    \item The Secretive Company That Might End Privacy as We Know It
+                        \url{https://www.nytimes.com/2020/01/18/technology/clearview-privacy-facial-recognition.html}
+                    \item Clearview’s Facial Recognition App Has Been Used By The Justice Department, ICE, Macy’s, Walmart, And The NBA
+                        \url{https://www.buzzfeednews.com/article/ryanmac/clearview-ai-fbi-ice-global-law-enforcement}
+                \end{enumerate}
+            \end{frame}
+
+            \begin{frame}
+                \frametitle{Repozytoria kodu (C)}
+                \begin{enumerate}
+                    \item Adversarial-Faces by BruceMacD
+                        \url{https://github.com/BruceMacD/Adversarial-Faces}
+                    \item Dlib 18.6 released: Make your own object detector!
+                        \url{http://blog.dlib.net/2014/02/dlib-186-released-make-your-own-object.html}
                 \end{enumerate}
             \end{frame}
 
@@ -289,6 +334,8 @@
                         \url{https://unsplash.com/photos/1xT5Yz2Am0M}
                     \item Zdjęcie autorstwa Isaiah Rustad
                         \url{https://unsplash.com/photos/PIhsoerkXxY}
+                    \item XKCD: Machine Learning
+                        \url{https://xkcd.com/1838/}
                 \end{enumerate}
             \end{frame}
 
