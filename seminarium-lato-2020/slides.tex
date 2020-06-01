@@ -1,5 +1,6 @@
 \documentclass{beamer}
 \usetheme{Boadilla}
+\beamertemplatenavigationsymbolsempty
 
 % Wczytanie pakietów: kodowania, czcionki i języki.
 \usepackage[utf8]{inputenc}
@@ -63,7 +64,7 @@
             \end{frame}
 
             \begin{frame}
-                \frametitle{Rozpoznawanie obrazu w służbie człowiekowi}
+                \frametitle{Przetwarzanie obrazu w służbie człowiekowi}
                 \begin{itemize}
                     \item diagnostyka medyczna
                     \item Optical Character Recognition i Optical Mark Recognition
@@ -236,7 +237,7 @@
                 \begin{center}
                     \begin{figure}
                         \includegraphics[height=0.75\textheight]{pictures/vondrick_duck.png}
-                        \caption{Czy ta kaczka wcale nie jest kaczką? [A3]}
+                        \caption{If it looks like a car and it honks like a car... [A3]}
                     \end{figure}
                 \end{center}
             \end{frame}
@@ -246,7 +247,7 @@
                 \begin{center}
                     \begin{figure}
                         \includegraphics[height=0.75\textheight]{pictures/hog.png}
-                        \caption{HOG: wizualizacja "twarzy człowieka" z biblioteki dlib [C2]}
+                        \caption{HOG: wizualizacja 'twarzy człowieka' z biblioteki dlib [C2]}
                     \end{figure}
                 \end{center}
             \end{frame}
@@ -291,14 +292,34 @@
             \end{frame}
 
     \section{Podsumowanie}
+        \subsection{Wnioski}
+            \begin{frame}
+                \frametitle{Wnioski}
+                \begin{itemize}
+                    \item HOG jest dość starą (2005) metodą wykrywania obiektów na zdjęciach, ale jest jednocześnie bardzo łatwy w implementacji (OpenCV + dlib)
+                    \item Bez względu na użytą metodę wykrywania, systemy są podatne na ataki i można to wykorzystać w różnych celach:
+                        \begin{itemize}
+                            \item oszukiwanie systemów wykrywania twarzy [A6, A7]
+                            \item modyfikowanie znaków drogowych w celu oszukania maszyn [A5, B3]
+                            \item podrabianie podpisów tradycyjnych weryfikowanych elektronicznie [A4]
+                        \end{itemize}
+                    \item Wszystkie Wasze zdjęcia, które postujecie w mediach społecznościowych są publiczne i zostaną użyte bez Waszej wiedzy i zgody do wytrenowania jakichś modeli
+                \end{itemize}
+            \end{frame}
 
         \subsection{Źródła}
-            \begin{frame}
+            \begin{frame}[shrink=15]
                 \frametitle{Źródła naukowe (A)}
                 \begin{enumerate}
-                    \item Szeliski, R. "Computer Vision: Algorithms and Applications". Springer: 2010.
-                    \item Dalal, N., Triggs, B. "Histogram of Oriented Gradients for Human Detection". [In proceedings] IEEE Computer Society Conference on Computer Vision and Pattern Recognition: 2005.
-                    \item Vondrick C. et al. "HOGgles: Visualizing Object Detection Features". [In proceedings] IEEE International Conference on Computer Vision: 2013.
+                    \item Szeliski, R. Computer Vision: Algorithms and Applications. Springer: 2010.
+                    \item Dalal, N., Triggs, B. Histogram of Oriented Gradients for Human Detection. [In proceedings] IEEE Computer Society Conference on Computer Vision and Pattern Recognition: 2005.
+                    \item Vondrick C. et al. HOGgles: Visualizing Object Detection Features. [In proceedings] IEEE International Conference on Computer Vision: 2013.
+                    \item Hafemann, L., Sabourin, R. "Characterizing and evaluating adversarial examples for Offline Handwritten Signature Verification.
+                        \url{https://arxiv.org/pdf/1901.03398.pdf}
+                    \item Eykholt, K. et al. Robust Physical-World Attacks on Deep Learning Visual Classification. [In proceedings] IEEE/CVF Conference on Computer Vision and Pattern Recognition: 2018.
+                    \item Sharif, M. et al. Accessorize to a Crime: Real and Stealthy Attack on State-of-the-Art Face Recognition. CCS '16: Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security: 2016.
+                    \item Komkov, S., Petiushko, A. AdvHat: Real-world adversarial attack on AdrFace Face ID system. 2019.
+                        \url {https://arxiv.org/abs/1908.08705}
                 \end{enumerate}
             \end{frame}
 
@@ -309,6 +330,8 @@
                         \url{https://www.nytimes.com/2020/01/18/technology/clearview-privacy-facial-recognition.html}
                     \item Clearview’s Facial Recognition App Has Been Used By The Justice Department, ICE, Macy’s, Walmart, And The NBA
                         \url{https://www.buzzfeednews.com/article/ryanmac/clearview-ai-fbi-ice-global-law-enforcement}
+                    \item Model Hacking ADAs to Pave Safer Roads for Autonomous Vehicles
+                        \url{https://www.mcafee.com/blogs/other-blogs/mcafee-labs/model-hacking-adas-to-pave-safer-roads-for-autonomous-vehicles/}
                 \end{enumerate}
             \end{frame}
 
@@ -330,8 +353,6 @@
                         \url{https://ai.stanford.edu/~syyeung/cvweb/tutorial1.html}
                     \item Zdjęcie autorstwa Imansyah Muhamad Putera
                         \url{https://unsplash.com/photos/n4KewLKFOZw}
-                    \item Zdjęcie autorstwa Free to Use Sounds
-                        \url{https://unsplash.com/photos/1xT5Yz2Am0M}
                     \item Zdjęcie autorstwa Isaiah Rustad
                         \url{https://unsplash.com/photos/PIhsoerkXxY}
                     \item XKCD: Machine Learning
