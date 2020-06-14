@@ -2,6 +2,8 @@
 
 \documentclass[12pt,a4paper,leqno,oneside,titlepage]{book}
 
+% amssymb musi być wczytane przed babel
+\usepackage{amssymb} 
 % Wczytanie pakietów: kodowania, czcionki i języki.
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -13,7 +15,9 @@
 \usepackage{amsmath}
 % Pakiet dodający rumuńskie znaki specjalne -- z przecinkiem pod literą.
 \usepackage{combelow}
-
+% pseudokody algorytmów
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
 % Ładne początki rozdziałów (pakiet fncychap).
 % Polecam Sonny i Conny. Bjornstrup najładniejszy, ale mi się bugował.
 \usepackage[Sonny]{fncychap}
@@ -38,8 +42,8 @@
 
 \frenchspacing
 
-\author{Tu wpisz imię i nazwisko studencie!}
-\title{Tu wpisz tytuł pracy inżynierskiej/licencjackiej/magisterskiej}
+\author{Magdalena Mozgawa}
+\title{Ataki na systemy przetwarzania obrazu}
 
 % \imod{k} Ładny zapis dzielenia modulo.
 \makeatletter
@@ -112,19 +116,19 @@
 {\large \bf Uniwersytet im. Adama Mickiewicza w Poznaniu \\ Wydział Matematyki i~Informatyki \par}
 \vspace{0.5cm plus 1mm minus 2mm}
 {{\bf Informatyka} \\%(Tu wpisz swój kierunek studiów)
-\small Informatyka taka i owaka\par}%(Tu wpisz specjalizację jeśli ją masz)
+\small Informatyka kto wie jaka to będzie\par}%(Tu wpisz specjalizację jeśli ją masz)
 \end{center}%
 
 \vspace{1.5cm plus 1fill}
 \begin{flushleft}
-{\center {\bf \Large Imiona i nazwisko} \\ \normalsize Nr albumu: \bf 999999\par}%(Tu wpisz swoje dane)
+{\center {\bf \Large Magdalena Mozgawa} \\ \normalsize Nr albumu: \bf 389479\par}%(Tu wpisz swoje dane)
 \end{flushleft}
 \vspace{1.5cm plus 1mm minus 2mm}
 
 \begin{center}
-{\huge\textbf{Tytuł pracy}\par}%(Tu wpisz tytuł pracy -- taki jak na porozumieniu i w systemie pd.wmi.amu.edu.pl)
+{\huge\textbf{Ataki na systemy przetwarzania obrazu}\par}%(Tu wpisz tytuł pracy -- taki jak na porozumieniu i w systemie pd.wmi.amu.edu.pl)
 \vspace{0.5cm plus 1mm minus 2mm}
-{\large Title in English}%(Tu wpisz angielski tytuł pracy -- taki jak na porozumieniu i w systemie pd.wmi.amu.edu.pl)
+{\large Attacks on computer vision systems}%(Tu wpisz angielski tytuł pracy -- taki jak na porozumieniu i w systemie pd.wmi.amu.edu.pl)
 \par
 \vspace{1.5cm plus 1.5fill}
 
@@ -137,7 +141,7 @@ Promotor: \\[3pt]
 \end{tabular}
 \end{flushright}
 \vspace{4cm plus .1fill}
-{\large 2020\par}%Tu wpisz rok oddania pracy
+{\large 2021 (oby)\par}%Tu wpisz rok oddania pracy
 \end{center}
 \end{titlepage}
 
@@ -176,14 +180,10 @@ Wyrażam zgodę na udostępnianie mojej pracy w zakresie koniecznym do ochrony m
 
 %Zastanów się komu chcesz podziękować; oczywiście dla siebie możesz stworzyć wiele wersji pracy z różnymi podziękowaniami dla rodziny, znajomych, szefa... Te podziękowania są przykładem i naprawdę możesz coś z siebie wykrzesać.
 \vspace{12cm} \hspace{1cm}\phantom{.}\\
-\phantom{.}\hspace{5cm}{Składam serdeczne podziękowania}\\
-\phantom{.}\hspace{5cm}{dr inż. Michałowi Renowi }\\
-\phantom{.}\hspace{5cm}{za jego nieocenioną pomoc }\\
-\phantom{.}\hspace{5cm}{przy pisaniu tej pracy.}\\
+\phantom{.}\hspace{5cm}{Tutaj będą podziękowania dla sąsiadów}\\
+\phantom{.}\hspace{5cm}{za siedzenie cicho.}\\
 \phantom{.}\hspace{5cm}{}\\
-\phantom{.}\hspace{5cm}{Dziękuję także serdecznie mojej rodzinie}\\
-\phantom{.}\hspace{5cm}{bez której cierpliwości, wsparcia, pomocy}\\
-\phantom{.}\hspace{5cm}{praca ta nie mogłaby powstać.}\\
+\phantom{.}\hspace{5cm}{I coś dla promotora.}\\
 
 \newpage
 % Przód pracy - spisy i abstrakty.
@@ -242,9 +242,45 @@ Rzeczy które tu można ująć to np.
 
 Ilu autorów, tyle wstępów\ldots{} Nie traktuj powyższych elementów jako obowiązkowe.
 
-\chapter{Typowy rozdział}%Na końcu tytułów rozdziałów i podrozdziałów nie stawiamy kropek.
+\chapter{Rozdział o systemach przetwarzania obrazu nieopartych o głębokie uczenie maszynowe}%Na końcu tytułów rozdziałów i podrozdziałów nie stawiamy kropek.
 
-Niektóre, doktrynerskie szkoły mówią, że praca powinna mieć dokładnie trzy rozdziały (i do tego oczywiście wstęp, zakończenie, bibliografię itd.). Lepiej, żeby rozdziałów było tyle ile trzeba, czyli nie za dużo i nie za mało. Jako że rozdziały to największe kawałki pracy, myślę, że jeśli miałoby ich być więcej niż siedem, to należy się zastanowić, czy nie da się pogrupować niektórych treści i umieścić je pod wspólnym parasolem. Najważniejsze by podział między rozdziały dobrze odzwierciedł treści jakie się w tych rozdziałach zawiera. W tym szablonie nie jest to zrobione dobrze\ldots{}
+(W tym rozdziale opisano systemy przetwarzania obrazu nieoparte o głębokie uczenie maszynowe -- czyli w szczególności te na bazie algorytmu Viola-Jonesa oraz oparte o histogramy zorientowanych gradientów.
+Czy w tym rozdziale warto też od razu opisywać ataki? Na razie to robię, ale być może warto będzie zrobić jakieś przetasowanie. Czas pokaże.)
+
+\section{Histogramy zorientowanych gradientów}
+
+Histogramy zorientowanych gradientów (ang. \textit{histograms of oriented gradients}, dalej: HOG) to deskryptory obrazu, pozwalające na opisanie zawartości danego obrazu za pomocą wielkości i orientacji gradientów. Technika ta pozwala na redukcję wymiarowości obrazu oraz zniwelowanie wpływu lokalnych różnic na całość deskryptora.\cite{DalalTriggs05Hog}
+
+\subsection{Opis algorytmu}
+Algorytm tworzenia histogramów zorientowanych gradientów składa się z dwóch faz: wyliczenia gradientów oraz głosowania histogramów. Pierwsza pozwala na pozyskanie dla \textit{n} x \textit{m}-wymiarowego obrazu w skali RGB dwóch \textit{n} x \textit{m}-wymiarowych macierzy opisujących gradienty w tym obrazie. Druga korzysta z tych macierzy do wyznaczenia histogramów zorientowanych gradientów w celu dalszej redukcji wymiarowości obrazu. Fazy te zostały bardziej szczegółowo opisane poniżej.
+
+\textbf{Wyliczenie gradientów}
+Plikiem wejściowym jest analizowany obraz o wymiarach n x m pikseli, który jest przetwarzany do 8-bitowej skali szarości i dzielony na nakładające komórki (ang. \textit cells), np. 3x3 piksele. W każdej komórce korzystając z równań: TUTAJ WKLEIĆ TE RÓWNANIA wyznaczany jest wielkość i kierunek gradientu względem jej centralnego piksela. Uzyskuje się w ten sposób dwie macierze n x m z wartościami odpowiadającymi wielkościom gradientów oraz ich kątom \textit{modulo} $180^\circ$.
+
+\textbf{Głosowanie histogramów}
+Elementem wejściowym są macierze uzyskane w kroku pierwszym. Macierze są dzielone na nienakładające się bloki (ang. \textit blocks) np. 8x8 wartości. Następie w obrębie każdego bloku odbywa się głosowanie, którego wynikiem jest histogram danego bloku. Szczegółowy algorytm głosowania pokazano w pseudokodzie.
+
+\begin{algorithm}
+\caption{Głosowanie histogramu w bloku}
+\hspace*{\algorithmicindent} \textbf{Wejście:} $B_{k}$ -- blok kątów w postaci listy \textit{i}-elementowej, $B_w$ -- blok wielkości gradientów w postaci listy \textit{i}-elementowej. \\
+\hspace*{\algorithmicindent} \textbf{Wyjście: } \textit{H} -- 9-elementowa lista definiująca histogram o klasach $0-20^{\circ}$, $20-40^{\circ}$, ..., $160-0^{\circ}.$ 
+
+\begin{algorithmic}
+\State $H\gets [0, 0, 0, 0, 0, 0, 0, 0, 0]$
+\For{$i\gets 1, n$}
+  \State $c\gets \left\lfloor{B_{k_{i}}}\right\rfloor$
+  \State $h\gets c\div 20$
+  \If {$c==B_{k_{i}}$}
+    \State $H[h]\gets B_{w_{i}}\div 2$
+    \State $H[h-1]\gets B_{w_{i}}\div 2$
+  \Else
+    \State $H[h]\gets B_{w_{i}}$
+  \EndIf
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\section{Algorytm Viola-Jonesa}
 
 \section{Podrozdział o bibliografii}
 
