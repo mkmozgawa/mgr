@@ -244,21 +244,25 @@ Ilu autorów, tyle wstępów\ldots{} Nie traktuj powyższych elementów jako obo
 
 \chapter{Rozdział o systemach przetwarzania obrazu nieopartych o głębokie uczenie maszynowe}%Na końcu tytułów rozdziałów i podrozdziałów nie stawiamy kropek.
 
-(W tym rozdziale opisano systemy przetwarzania obrazu nieoparte o głębokie uczenie maszynowe -- czyli w szczególności te na bazie algorytmu Viola-Jonesa oraz oparte o histogramy zorientowanych gradientów.
-Czy w tym rozdziale warto też od razu opisywać ataki? Na razie to robię, ale być może warto będzie zrobić jakieś przetasowanie. Czas pokaże.)
+(KOMENTARZ W tym rozdziale opisano systemy przetwarzania obrazu nieoparte o głębokie uczenie maszynowe -- czyli w szczególności te na bazie algorytmu Viola-Jonesa oraz oparte o histogramy zorientowanych gradientów.
+Czy w tym rozdziale warto też od razu opisywać ataki? Na razie to robię, ale być może warto będzie zrobić jakieś przetasowanie. Czas pokaże.
+Czego NIE opisuję w tym rozdziale (póki co): dlaczego redukować w ogóle wymiarowość obrazów ("przekleństwo wymiarowości")).
+Co będę opisywać w tym rozdziale, ale będzie obejmować co najmniej te dwa algorytmy, więc nie opisuję dla każdego z osobna: jak wygląda pipeline'a przetwarzania danych (ekstrakcja cech-deskryptorów, trenowanie modelu, testowanie modelu)).
 
 \section{Histogramy zorientowanych gradientów}
 
-Histogramy zorientowanych gradientów (ang. \textit{histograms of oriented gradients}, dalej: HOG) to deskryptory obrazu, pozwalające na opisanie zawartości danego obrazu za pomocą wielkości i orientacji gradientów. Technika ta pozwala na redukcję wymiarowości obrazu oraz zniwelowanie wpływu lokalnych różnic na całość deskryptora.\cite{DalalTriggs05Hog}
+Histogramy zorientowanych gradientów (ang. \textit{histograms of oriented gradients}, dalej: HOG) to deskryptory pozwalające na opisanie zawartości danego obrazu za pomocą wielkości i orientacji gradientów. Technika ta pozwala na redukcję wymiarowości obrazu oraz zniwelowanie wpływu lokalnych różnic na całość deskryptora.\cite{DalalTriggs05Hog}
 
 \subsection{Opis algorytmu}
 Algorytm tworzenia histogramów zorientowanych gradientów składa się z dwóch faz: wyliczenia gradientów oraz głosowania histogramów. Pierwsza pozwala na pozyskanie dla \textit{n} x \textit{m}-wymiarowego obrazu w skali RGB dwóch \textit{n} x \textit{m}-wymiarowych macierzy opisujących gradienty w tym obrazie. Druga korzysta z tych macierzy do wyznaczenia histogramów zorientowanych gradientów w celu dalszej redukcji wymiarowości obrazu. Fazy te zostały bardziej szczegółowo opisane poniżej.
 
-\textbf{Wyliczenie gradientów}
-Plikiem wejściowym jest analizowany obraz o wymiarach n x m pikseli, który jest przetwarzany do 8-bitowej skali szarości i dzielony na nakładające komórki (ang. \textit cells), np. 3x3 piksele. W każdej komórce korzystając z równań: TUTAJ WKLEIĆ TE RÓWNANIA wyznaczany jest wielkość i kierunek gradientu względem jej centralnego piksela. Uzyskuje się w ten sposób dwie macierze n x m z wartościami odpowiadającymi wielkościom gradientów oraz ich kątom \textit{modulo} $180^\circ$.
+\paragraph{Wyliczenie gradientów.}
+Plikiem wejściowym jest analizowany obraz o wymiarach n x m pikseli, który jest przetwarzany do 8-bitowej skali szarości i dzielony na nakładające komórki (ang. \textit{cells}), np. 3x3 piksele. W każdej komórce wyznaczane są wielkość i kierunek gradientu względem jej centralnego piksela, korzystając z następujących własności:
 
-\textbf{Głosowanie histogramów}
-Elementem wejściowym są macierze uzyskane w kroku pierwszym. Macierze są dzielone na nienakładające się bloki (ang. \textit blocks) np. 8x8 wartości. Następie w obrębie każdego bloku odbywa się głosowanie, którego wynikiem jest histogram danego bloku. Szczegółowy algorytm głosowania pokazano w pseudokodzie.
+Uzyskuje się w ten sposób dwie macierze n x m z wartościami odpowiadającymi wielkościom gradientów oraz ich kątom \textit{modulo} $180^\circ$.
+
+\paragraph{Głosowanie histogramu.}
+Elementem wejściowym są macierze uzyskane w kroku pierwszym. Macierze są dzielone na nienakładające się bloki (ang. \textit{blocks}) np. 8x8 wartości. Następie w obrębie każdego bloku odbywa się głosowanie, którego wynikiem jest histogram danego bloku. Szczegółowy algorytm głosowania pokazano w pseudokodzie.
 
 \begin{algorithm}
 \caption{Głosowanie histogramu w bloku}
@@ -279,6 +283,32 @@ Elementem wejściowym są macierze uzyskane w kroku pierwszym. Macierze są dzi
 \EndFor
 \end{algorithmic}
 \end{algorithm}
+
+\paragraph{Efekt końcowy.}
+Wynikiem działania zastosowanej metody są histogramy zorientowanych gradientów. Warto zauważyć, że użycie tej metody prowadzi do znacznego zmniejszenia wymiarowości danych. Przykładowo, można policzyć, że 24-bitowy obraz o wymiarach 64x128 pikseli, do którego opisania pierwotnie potrzeba by 24 576 wartości, może być podzielony na 27 bloków 16x16 pikseli, co daje 243 wartości w histogramach opisujące cały obraz. Jest to ponad stukrotne zmniejszenie liczby wartości opisujących obraz, które wciąż pozwala na stworzenie stosunkowo skutecznego deskryptora.\cite{DalalTriggs05Hog}
+
+\subsection{Klasyfikatory oparte o histogramy zorientowanych gradientów}
+
+Wyliczenie deskryptora dla wielu obrazów to pierwszy krok do stworzenia klasyfikatora danej cechy opartego o uczenie maszynowe. Popularność HOG przypada na wczesne lata 2000, kiedy znacznym poważaniem cieszyły się m.in. maszyny wektorów podpierająch (ang. \textit{Support Vector Machines}, dalej: SVM). Jest to model uczenia maszynowego, zaproponowany przez Vladimira Vapnika w 1995, pozwalający na wyznaczenie optymalnej hiperpłaszczyzny, która odziedzialałaby dane z różnych klas zachowując największy możliwy margines zaufania.\cite{Norbert03,Vapnik95} Ten model został zastosowany również przez autorów metody histogramów zorientowanych gradientów\cite{DalalTriggs05Hog}, jednak jego bardziej szczegółowe omówienie wykracza poza zakres tej pracy i nie jest konieczne do zrozumienia sposobu działania metody ani możliwych dróg ataku na nią. (KOMENTARZ Chyba że promotor bardzo będzie tego chciał albo zabraknie materiału.)
+
+Wytrenowany klasyfikator może zostać następnie zastosowany do wykrywania danej cechy na różnych zdjęciach, także takich, które nie były użyte do jego wytworzenia. Przykładem klasyfikatora, którego można użyć do wykrycia twarzy \textit{en face} jest ten załączony do biblioteki \textit{dlib}, otwartoźródłowej biblioteki z narzędziami do uczenia maszynowego, napisanej w języku C++ i posiadającej też API do języka Python.\cite{dlibPage} Poniżej zaprezentowano przykładową implementację wspomnianego klasyfikatora w celu rozpoznania twarzy na zdjęciu oraz jego efekt.
+
+\lstinputlisting[language=Python, captionpos=b, belowcaptionskip=4pt, caption={Wyszukiwanie twarzy z użyciem biblioteki dlib}]{hog_classifier.py}
+
+\begin{figure}[!tbp]
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{pictures/face.jpg}
+    \caption{Oryginalne zdjęcie.\cite{Putera}}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{pictures/face_detected.jpg}
+    \caption{Efekt działania klasyfikatora.}
+  \end{minipage}
+\end{figure}
+
+\subsection{Metody ataku}
 
 \section{Algorytm Viola-Jonesa}
 
