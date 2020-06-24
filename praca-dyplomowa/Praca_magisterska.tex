@@ -314,118 +314,14 @@ Wytrenowany klasyfikator może zostać następnie zastosowany do wykrywania dane
 \end{figure}
 
 \subsection{Metody ataku}
+Ze względu na ich stosunkowo niski poziom skomplikowania i wysoką intepretowalność w porównaniu do modeli opartych o głębokie uczenie maszynowe istnieją metody pozwalające na wizualizację deskryptorów HOG. Metody te, poza ułatwianiem pracy nad debugowaniem istniejących modeli, mogą także służyć do opracowywania metod ataku. Przegląd istniejącej literatury wskazuje, że rozwiązania oparte o HOG są podatne na dwa typy ataków: ataki przez unikanie (ang. \textit{evasion attacks}) oraz ataki przez zatrucie (ang. \textit{poisoning attacks}).\cite{Hoggles, MacDonald19} (KOMENTARZ: szersza charakterystyka typów ataków oparta o proponowaną przez NIST nomenkulaturę znajdzie się gdzieś we wstępnym rozdziale.)
 
-\section{Algorytm Viola-Jonesa}
+\paragraph{Ataki przez unikanie} \\
+W przypadku HOG ataki przez unikanie polegają na przesłonięciu w obiekcie fragmentu lub fragmentów odpowiadających blokom o znaczących wartościach deskryptora. Przykładowo, w przypadku wykrywania twarzy będą to rejony ust oraz oczu i nosa za pomocą maseczki lub ciemnych okularów. 
 
-\section{Podrozdział o bibliografii}
+\section{Algorytm Violi-Jonesa}
 
-Podrozdziały mogą czytelnikowi ułatwić przyswajanie pracy -- hierarchicznie uporządkowaną treść lepiej się czyta.
-
-% Wstawianie ilustracji o określonej szerokości.
-\begin{figure}[h!]
-  % Centrowanie obrazu w poziomie.
-  \centering
-    \includegraphics[width=0.35\textwidth]{logo_wersja-podstawowa_granat_1.jpg}
-  % Warto podawać źródło -- np. z pomocą cite w podpisie; jeśli się samemu narysowało rysunek, to można napisać Źródło: praca własna; jeśli się narysowało coś na podstawie informacji z jakiegoś źródła, można napisać Źródło: praca własna na podstawie \cite{PozycjaBibliografii}.
-  \caption{To jest logo UAM. Źródło: System Identyfikacji Wizualnej UAM \cite{SIW}}
-\end{figure}
-
-Dobrze jest cytować artykuły naukowe tak, żeby stwierdzenia zawarte w pracy, które nie są wynikiem oryginalnych myśli autora zawierały do nich odniesienie. Są różne szkoły cytowania, ale w informatyce przyjęło się, że bibliografię umieszczamy na końcu pracy numerując, a w tekście piszemy numer w nawiasie kwadratowym, np. tak [99]. Nie umieszczamy bibliografii w przypisach dolnych\footnote{To jest przypis dolny.} -- one służą raczej wyjaśnianiu różnych pojęć itp.
-
-Na szczęście \LaTeX{} dużo sam robi -- w bibliografii (patrz plik bibliografia.bib) umieszczamy swoje pozycje bibliograficzne, a w pracy odwołujemy się do nich przez nazwy które sami im nadaliśmy. \LaTeX{} sam się zatroszczy w jakim stylu zacytować. W obecnej bibliografii jest kilka przykłądów, np. książka ,,\textit{Kryptografia i bezpieczeństwo sieci komputerowych. Matematyka szyfrów i techniki kryptologii}''\cite{Stallings11kryptografia}, strona internetowa ,,\textit{Seminarium ZATABEDA}''\cite{Gogolewski13seminarium}, artykuł zamieszczony w Internecie ,,\textit{How to write an effective title and abstract and choose appropriate keywords}''\cite{Rodrigues13howtowrite}, wiadomość z grup dyskusyjnych ,,\textit{Random numbers for C: The END?}''\cite{Marsaglia99randomnum} i prezentacja lub wykład zamieszczone w Internecie ,,\textit{Szumy pseudolosowych map.}''\cite{Hanc15szumy}.\\
-
-Wiele źródeł internetowych, szczególnie prac naukowych, już zawiera informację bibliograficzną w formacie \LaTeX{}a, którą można wkleić do swojego pliku z bibliografią.
-
-Jeśli samemu znajdujesz źródła w Internecie, pamiętaj że trzeba podać autora, tytuł, rok publikacji, informacje wystarczające do znalezienia źródła, etc. Czasem ,,autor'' jest umowny, np. może to być instytucja.
-
-\section{Kilka przykładów typografii}
-
-% Lista nienumerowana.
-\begin{itemize}
-\item \textbf{Wymieniany} -- element może mieć zagnieżdżenia:
-    \begin{itemize}
-    \item \textbf{Przykład}, faktycznie tu jest zagnieżdżenie.
-    \end{itemize}
-\end{itemize}
-
-% Własna definicja
-\begin{mydef}
-\textbf{Można pogrubić nazwę określanego pojęcia} aby było jasne co definiujemy.
-\end{mydef}
-
-\chapter{Inny rozdział}
-
-% Ilustracje mogą zawierać naraz kilka plików.
-% Pamiętaj o podawaniu źródła wykorzystywanych obrazów.
-% Nawet jeśli stworzyłaś/-eś reprodukcję.
-\begin{figure}[h!]
-  \centering
-    \includegraphics[height=0.3\textheight]{PM5544_with_non-PAL_signals.png}
-    \includegraphics[height=0.3\textheight]{logo_wersja-uzupeniajca_czarny_2.pdf}
-  \caption{Obrazki rastrowe i wektorowe}
-\end{figure}
-
-Rysunek 2.1 pochodzi z takiej tam strony\footnote{\url{http://siw.amu.edu.pl/siw/strona-glowna/strona-glowna}}.
-
-\section{Znów podrozdział}
-
-Przykład inline'owego trybu matematycznego: $X_{n+1} = a X_n + c \imod{m}$.
-
-\subsection{Ostatni poziom zagłębienia uwzględniany w domyślnym spisie treści.}
-
-% Cytat na wstęp sekcji.
-\begin{chapquote}{Marcin Mateusz Hanc}
-Gracze na szczęście nie przejmowali się dotarciem do ,,końca świata'' \cite{Hanc15szumy}
-\end{chapquote}
-
-% Przykład tabeli z danymi.
-\begin{table}[h]
-\centering
-\label{tab:RNG_examples}
-\begin{tabular}{l|c}
- Nagłówek & Coś innego \\
- \hline \hline
- Pierwszy rząd & 100 \\
- \hline
- Rząd & \multirow{2}{*}{TAK} \\
- podwójny & \\
-\end{tabular}
-\caption{Przykładowa tabela}
-\end{table}
-
-% Przykład wstawienia listingu kodu w języku C++ z podpisem.
-\lstinputlisting[language=C++, captionpos=b, belowcaptionskip=4pt, caption={Ułamkowy Ruch Browna}]{fBm.cpp}
-
-\section{Sekcja ze znakiem \_ działa}
-
-% Wyliczenie elementów.
-\begin{enumerate}
-\item Elementy mogą być dłuższe niż jedna linia.
-
-FAKTYCZNIE.
-
-\item Drugi element.
-
-\end{enumerate}
-
-\chapter{Typografia -- dobre rady}
-
-Należy w~pracy uważać, żeby jednoliterowe wyrazy takie jak ,,i'', ,,a'', etc. nie kończyły linii. Można to łatwo uzyskać pisząc \textasciitilde (znak tyldy) za taką literką. Znak tyldy oznacza spację, której nie wolno dzielić; w~innych przypadkach w~których chcielibyśmy tego uniknąć, też można ten trick stosować. W~tym akapicie jest to praktykowane, żeby pokazać technikę, a~w~całej reszcie szablonu -- nie. Niestety, póki \LaTeX{} nie zmądrzeje, trzeba to wszędzie ręcznie robić.
-
-Proszę pamiętać o różnicy różnicy między dywizem, myślnikiem i półpauzą. Otóż -- jak to zresztą widać w innych miejscach w szablonie -- trzeba używać dwóch kresek do oznaczenia ,,myślnika'' w zdaniu. W tradycyjnej polskiej typografii myślnik to ---, a znak -- to tzw. półpauza, jednak zaczyna ona wypierać myślnik i jest dziś powszechnie używana zamiast niego, więc tak radzę pisać. Pojedynczej kreski w \LaTeX{}u używamy np. w zakresach (strony 1-10), albo złożeniach typu czerwono-czarne.
-
-Wyrazy obcojęzyczne, można oznaczać kursywą -- przykładowo kiedy się pisze np. o własności \textit{non-repudiation}. Niektóre terminy można też doprecyzować podając w nawiasie źródło (ang. \textit{source}).
-
-W języku polskim, cudzysłów otwierający pisze się inaczej niż zamykający, a w \LaTeX{}u pisze się je ,,tak''.
-
-Zanim pracę odda się promotorowi, warto ją przeczytać. Niestety, mózg autora buntuje się często wobec próby czytania po raz n-ty czegoś, co sam wymyślił. Radzę więc czytać na głos i się nagrać, a promotorowi wysłać audiobooka. Niektóre błędy wynikające z wielokrotnej edycji można wtedy wyłapać.
-
-Na wszelki wypadek, należy też zajrzeć na stronę wydziału \cite{WMIdyplom} i sprawdzić, czy nie zmieniły się wymagania dotyczące pracy dyplomowej. (W razie wątpliwości można też dziekanat pytać o różne szczegóły.) Wyrocznią jest dziekanat, a nie ten szablon!
-
-\addcontentsline{toc}{chapter}{Zakończenie}
-\chapter*{Zakończenie}
-
-Tak jak we wstępie pisało się o czym będzie praca, tak w zakończeniu pisze się o czym praca była. W zakończeniu podaje się często pomysły na dalsze badania w danym kierunku, ale jeśli takich pomysłów jest więcej lub są szczegółowe, to czasami robi się to w całym rozdziale przed zakończeniem.
+Tutaj będzie opisanych na kolejnych kilka stron algorytm Violi i Jonesa. 
 
 \newpage
 % Dodanie wpisu Bibliografia do Spisu Treści.
