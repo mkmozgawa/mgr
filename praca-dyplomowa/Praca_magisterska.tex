@@ -257,12 +257,17 @@ Histogramy zorientowanych gradientów (ang. \textit{histograms of oriented gradi
 Algorytm tworzenia histogramów zorientowanych gradientów składa się z dwóch faz: wyliczenia gradientów oraz głosowania histogramów. Pierwsza pozwala na pozyskanie dla \textit{n} x \textit{m}-wymiarowego obrazu w skali RGB dwóch \textit{n} x \textit{m}-wymiarowych macierzy opisujących gradienty w tym obrazie. Druga korzysta z tych macierzy do wyznaczenia histogramów zorientowanych gradientów w celu dalszej redukcji wymiarowości obrazu. Fazy te zostały bardziej szczegółowo opisane poniżej.
 
 \paragraph{Wyliczenie gradientów.}
-Plikiem wejściowym jest analizowany obraz o wymiarach n x m pikseli, który jest przetwarzany do 8-bitowej skali szarości i dzielony na nakładające komórki (ang. \textit{cells}), np. 3x3 piksele. W każdej komórce wyznaczane są wielkość i kierunek gradientu względem jej centralnego piksela, korzystając z następujących własności:
+Plikiem wejściowym jest analizowany obraz o wymiarach \textit{n} x \textit{m} pikseli, który jest przetwarzany do 8-bitowej skali szarości i dzielony na nakładające się komórki (ang. \textit{cells}) ustalonej wielkości, wyznaczone wokół centralnego piksela danej komórki. Następnie dla każdej takiej komórki wylicza się wielkość ($M(x,y)$) i kąt ($\alpha(x,y)$) wektora gradientu:
 
-Uzyskuje się w ten sposób dwie macierze n x m z wartościami odpowiadającymi wielkościom gradientów oraz ich kątom \textit{modulo} $180^\circ$.
+\begin{align}
+M(x,y) = \sqrt{\left( x^{2}+x^{2}\right)} \\
+\alpha(x,y) = \arctan{\frac{x}{y}}
+\end{align}
+
+gdzie dla centralnego piksela danej komórki, znajdującego się w $i$-tej kolumnie $j$-tego wiersza, $x$ i $y$ to wartość bezwględna różnicy wartości między najodleglejszymi pikselami odpowiednio w $j$-tym wierszu i $i$-tej kolumnie. Uzyskuje się w ten sposób dwie macierze n x m z wartościami odpowiadającymi wielkościom gradientów oraz ich kątom \textit{modulo} $180^\circ$.\cite{dpi2008}
 
 \paragraph{Głosowanie histogramu.}
-Elementem wejściowym są macierze uzyskane w kroku pierwszym. Macierze są dzielone na nienakładające się bloki (ang. \textit{blocks}) np. 8x8 wartości. Następie w obrębie każdego bloku odbywa się głosowanie, którego wynikiem jest histogram danego bloku. Szczegółowy algorytm głosowania pokazano w pseudokodzie.
+Elementem wejściowym są macierze uzyskane w kroku pierwszym. Macierze są dzielone na nienakładające się bloki (ang. \textit{blocks}). Następie w obrębie każdego bloku odbywa się głosowanie, którego wynikiem jest histogram danego bloku. Szczegółowy algorytm głosowania pokazano w pseudokodzie.
 
 \begin{algorithm}
 \caption{Głosowanie histogramu w bloku}
