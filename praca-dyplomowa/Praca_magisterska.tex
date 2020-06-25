@@ -251,20 +251,20 @@ Co będę opisywać w tym rozdziale, ale będzie obejmować co najmniej te dwa 
 
 \section{Histogramy zorientowanych gradientów}
 
-Histogramy zorientowanych gradientów (ang. \textit{histograms of oriented gradients}, dalej: HOG) to deskryptory pozwalające na opisanie zawartości danego obrazu za pomocą wielkości i orientacji gradientów. Technika ta pozwala na redukcję wymiarowości obrazu oraz zniwelowanie wpływu lokalnych różnic na całość deskryptora.\cite{DalalTriggs05Hog}
+Histogramy zorientowanych gradientów (ang. \textit{histograms of oriented gradients}, dalej: HOG) to deskryptory pozwalające na opisanie zawartości danego obrazu za pomocą wielkości i orientacji gradientów. Technika ta pozwala na redukcję wymiarowości obrazu oraz zniwelowanie wpływu lokalnych różnic na całość deskryptora\cite{DalalTriggs05Hog}.
 
 \subsection{Opis algorytmu}
-Algorytm tworzenia histogramów zorientowanych gradientów składa się z dwóch faz: wyliczenia gradientów oraz głosowania histogramów. Pierwsza pozwala na pozyskanie dla \textit{n} x \textit{m}-wymiarowego obrazu w skali RGB dwóch \textit{n} x \textit{m}-wymiarowych macierzy opisujących gradienty w tym obrazie. Druga korzysta z tych macierzy do wyznaczenia histogramów zorientowanych gradientów w celu dalszej redukcji wymiarowości obrazu. Fazy te zostały bardziej szczegółowo opisane poniżej.
+Algorytm tworzenia histogramów zorientowanych gradientów składa się z dwóch faz: wyliczenia gradientów oraz głosowania histogramów. Pierwsza pozwala na pozyskanie dla $n\times m$-wymiarowego obrazu w skali RGB dwóch $n\times m$-wymiarowych macierzy opisujących gradienty w tym obrazie. Druga korzysta z tych macierzy do wyznaczenia histogramów zorientowanych gradientów w celu dalszej redukcji wymiarowości obrazu. Fazy te zostały bardziej szczegółowo opisane poniżej.
 
 \paragraph{Wyliczenie gradientów.}
-Plikiem wejściowym jest analizowany obraz o wymiarach \textit{n} x \textit{m} pikseli, który jest przetwarzany do 8-bitowej skali szarości i dzielony na nakładające się komórki (ang. \textit{cells}) ustalonej wielkości, wyznaczone wokół centralnego piksela danej komórki. Następnie dla każdej takiej komórki wylicza się wielkość ($M(x,y)$) i kąt ($\alpha(x,y)$) wektora gradientu:
+Plikiem wejściowym jest analizowany obraz o wymiarach $n\times m$ pikseli, który jest przetwarzany do 8-bitowej skali szarości i dzielony na nakładające się komórki (ang. \textit{cells}) ustalonej wielkości, wyznaczone wokół centralnego piksela danej komórki. Następnie dla każdej takiej komórki wylicza się wielkość ($M(x,y)$) i kąt ($\alpha(x,y)$) wektora gradientu:
 
 \begin{align}
 M(x,y) = \sqrt{\left( x^{2}+x^{2}\right)} \\
 \alpha(x,y) = \arctan{\frac{x}{y}}
 \end{align}
 
-gdzie dla centralnego piksela danej komórki, znajdującego się w $i$-tej kolumnie $j$-tego wiersza, $x$ i $y$ to wartość bezwględna różnicy wartości między najodleglejszymi pikselami odpowiednio w $j$-tym wierszu i $i$-tej kolumnie. Uzyskuje się w ten sposób dwie macierze n x m z wartościami odpowiadającymi wielkościom gradientów oraz ich kątom \textit{modulo} $180^\circ$.\cite{dpi2008}
+gdzie dla centralnego piksela danej komórki, znajdującego się w $i$-tej kolumnie $j$-tego wiersza, $x$ i $y$ to wartość bezwględna różnicy wartości między najodleglejszymi pikselami odpowiednio w $j$-tym wierszu i $i$-tej kolumnie. Uzyskuje się w ten sposób dwie macierze $n\times m$ z wartościami odpowiadającymi wielkościom gradientów oraz ich kątom \textit{modulo} $180^\circ$\cite{dpi2008}.
 
 \paragraph{Głosowanie histogramu.}
 Elementem wejściowym są macierze uzyskane w kroku pierwszym. Macierze są dzielone na nienakładające się bloki (ang. \textit{blocks}). Następie w obrębie każdego bloku odbywa się głosowanie, którego wynikiem jest histogram danego bloku. Szczegółowy algorytm głosowania pokazano w pseudokodzie.
@@ -290,15 +290,15 @@ Elementem wejściowym są macierze uzyskane w kroku pierwszym. Macierze są dzi
 \end{algorithm}
 
 \paragraph{Efekt końcowy.}
-Wynikiem działania zastosowanej metody są histogramy zorientowanych gradientów. Warto zauważyć, że użycie tej metody prowadzi do znacznego zmniejszenia wymiarowości danych. Przykładowo, można policzyć, że 24-bitowy obraz o wymiarach 64x128 pikseli, do którego opisania pierwotnie potrzeba by 24 576 wartości, może być podzielony na 27 bloków 16x16 pikseli, co daje 243 wartości w histogramach opisujące cały obraz. Jest to ponad stukrotne zmniejszenie liczby wartości opisujących obraz, które wciąż pozwala na stworzenie stosunkowo skutecznego deskryptora.\cite{DalalTriggs05Hog}
+Wynikiem działania zastosowanej metody są histogramy zorientowanych gradientów. Warto zauważyć, że użycie tej metody prowadzi do znacznego zmniejszenia wymiarowości danych. Przykładowo, można policzyć, że 24-bitowy obraz o wymiarach $64\times128$ pikseli, do którego opisania pierwotnie potrzeba by 24 576 wartości, może być podzielony na 27 bloków $16\times16$ pikseli, co daje 243 wartości w histogramach opisujące cały obraz. Jest to ponad stukrotne zmniejszenie liczby wartości opisujących obraz, które wciąż pozwala na stworzenie stosunkowo skutecznego deskryptora\cite{DalalTriggs05Hog}.
 
 \subsection{Klasyfikatory oparte o histogramy zorientowanych gradientów}
 
-Wyliczenie deskryptora dla wielu obrazów to pierwszy krok do stworzenia klasyfikatora danej cechy opartego o uczenie maszynowe. Popularność HOG przypada na wczesne lata 2000, kiedy znacznym poważaniem cieszyły się m.in. maszyny wektorów podpierająch (ang. \textit{Support Vector Machines}, dalej: SVM). Jest to model uczenia maszynowego, zaproponowany przez Vladimira Vapnika w 1995, pozwalający na wyznaczenie optymalnej hiperpłaszczyzny, która odziedzialałaby dane z różnych klas zachowując największy możliwy margines zaufania.\cite{Norbert03,Vapnik95} Ten model został zastosowany również przez autorów metody histogramów zorientowanych gradientów\cite{DalalTriggs05Hog}, jednak jego bardziej szczegółowe omówienie wykracza poza zakres tej pracy i nie jest konieczne do zrozumienia sposobu działania metody ani możliwych dróg ataku na nią. (KOMENTARZ Chyba że promotor bardzo będzie tego chciał albo zabraknie materiału.)
+Wyliczenie deskryptora dla wielu obrazów to pierwszy krok do stworzenia klasyfikatora danej cechy opartego o uczenie maszynowe. Popularność HOG przypada na wczesne lata 2000, kiedy znacznym poważaniem cieszyły się m.in. maszyny wektorów podpierająch (ang. \textit{Support Vector Machines}, dalej: SVM). Jest to model uczenia maszynowego, zaproponowany przez Vladimira Vapnika w 1995, pozwalający na wyznaczenie optymalnej hiperpłaszczyzny, która odziedzialałaby dane z różnych klas zachowując największy możliwy margines zaufania \cite{Norbert03,Vapnik95}. Ten model został zastosowany również przez autorów metody histogramów zorientowanych gradientów, jednak jego bardziej szczegółowe omówienie wykracza poza zakres tej pracy i nie jest konieczne do zrozumienia sposobu działania metody ani możliwych dróg ataku na nią \cite{DalalTriggs05Hog}. (KOMENTARZ Chyba że promotor bardzo będzie tego chciał albo zabraknie materiału.)
 
-Wytrenowany klasyfikator może zostać następnie zastosowany do wykrywania danej cechy na różnych zdjęciach, także takich, które nie były użyte do jego wytworzenia. Przykładem klasyfikatora, którego można użyć do wykrycia twarzy \textit{en face} jest ten załączony do biblioteki \textit{dlib}, otwartoźródłowej biblioteki z narzędziami do uczenia maszynowego, napisanej w języku C++ i posiadającej też API do języka Python.\cite{dlibPage} Poniżej zaprezentowano przykładową implementację wspomnianego klasyfikatora w celu rozpoznania twarzy na zdjęciu oraz jego efekt.
+Wytrenowany klasyfikator może zostać następnie zastosowany do wykrywania danej cechy na różnych zdjęciach, także takich, które nie były użyte do jego wytworzenia. Przykładem klasyfikatora, którego można użyć do wykrycia twarzy \textit{en face} jest ten załączony do biblioteki \textit{dlib}, otwartoźródłowej biblioteki z narzędziami do uczenia maszynowego, napisanej w języku C++ i posiadającej też API do języka Python\cite{dlibPage}. Poniżej zaprezentowano przykładową implementację wspomnianego klasyfikatora w celu rozpoznania twarzy na zdjęciu oraz efekt działania takiego skryptu.
 
-\lstinputlisting[language=Python, captionpos=b, belowcaptionskip=4pt, caption={Wyszukiwanie twarzy z użyciem biblioteki dlib}]{hog_classifier.py}
+\lstinputlisting[language=Python, label={lst:hog} captionpos=b, belowcaptionskip=4pt, caption={Wyszukiwanie twarzy z użyciem biblioteki dlib}]{hog_classifier.py}
 
 \begin{figure}[!tbp]
   \centering
@@ -314,10 +314,25 @@ Wytrenowany klasyfikator może zostać następnie zastosowany do wykrywania dane
 \end{figure}
 
 \subsection{Metody ataku}
-Ze względu na ich stosunkowo niski poziom skomplikowania i wysoką intepretowalność w porównaniu do modeli opartych o głębokie uczenie maszynowe istnieją metody pozwalające na wizualizację deskryptorów HOG. Metody te, poza ułatwianiem pracy nad debugowaniem istniejących modeli, mogą także służyć do opracowywania metod ataku. Przegląd istniejącej literatury wskazuje, że rozwiązania oparte o HOG są podatne na dwa typy ataków: ataki przez unikanie (ang. \textit{evasion attacks}) oraz ataki przez zatrucie (ang. \textit{poisoning attacks}).\cite{Hoggles, MacDonald19} (KOMENTARZ: szersza charakterystyka typów ataków oparta o proponowaną przez NIST nomenkulaturę znajdzie się gdzieś we wstępnym rozdziale.)
+Ze względu na ich stosunkowo niski poziom skomplikowania i wysoką intepretowalność w porównaniu do modeli opartych o głębokie uczenie maszynowe istnieją metody pozwalające na wizualizację deskryptorów HOG. Metody te, poza ułatwianiem pracy nad debugowaniem istniejących modeli, mogą także służyć do opracowywania metod ataku. Przegląd istniejącej literatury wskazuje, że rozwiązania oparte o HOG są podatne na dwa typy ataków: ataki przez unikanie (ang. \textit{evasion attacks}) oraz ataki przez zatrucie (ang. \textit{poisoning attacks})\cite{Hoggles, MacDonald19}. (KOMENTARZ: szersza charakterystyka typów ataków oparta o proponowaną przez NIST nomenkulaturę znajdzie się gdzieś we wstępnym rozdziale.)
 
-\paragraph{Ataki przez unikanie} \\
-W przypadku HOG ataki przez unikanie polegają na przesłonięciu w obiekcie fragmentu lub fragmentów odpowiadających blokom o znaczących wartościach deskryptora. Przykładowo, w przypadku wykrywania twarzy będą to rejony ust oraz oczu i nosa za pomocą maseczki lub ciemnych okularów. 
+\paragraph{Ataki przez unikanie.}
+W przypadku HOG ataki przez unikanie polegają na przesłonięciu w obiekcie fragmentu lub fragmentów odpowiadających blokom o znaczących wartościach deskryptora. Przykładowo, w przypadku opartego o HOG detektora twarzy we wspomnianej bibliotece dlib, skuteczność wykrywania znacząco spada dla twarzy w ciemnych okularach: dla zbioru, na którym trenowany był dlibowski \textit{frontal face detector} wynosi 91\% dla ogółu zdjęć oraz 57\% dla zdjęć osób w ciemnych okularach zasłaniających oczy (niezależnie od kształtu okularów).\footnote{.(KOMENTARZ: osoba pisząca wyjęła sobie te dane z d...obrze napisanego skryptu, który przeiterował przez wszystkie obrazy oraz przez podgrupę obrazów z osobami w dość ciemnych okularach. Czy to materiał do jakiegoś appendixu?) } Podobny efekt można uzyskać dzięki założeniu np. maseczki albo komina zasłaniającego dolną część twarzy\cite{dlibPage, MacDonald19}.
+
+\begin{figure}[!tbp]
+  \centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{pictures/Tomek_detected.jpg}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{pictures/Tomek_szalik_detected.jpg}
+  \end{minipage}
+  \caption{Atak przez unikanie. Źródło zdjęcia: opracowanie własne.}
+\end{figure}
+
+\paragraph{Ataki przez zatrucie.}
+Innym sposobem na przechytrzenie systemu przetwarzania obrazu jest zwizualizowanie wyuczonego detektora (jeśli mamy do niego dostęp) albo histogramu gradientów dla pozytywnego przykładu, a następnie użycie go do ,,zatrucia'' materiału testowego poprzez np. zapozowanie w ubraniu z nadrukiem pokazującym tę wizualizację. W takim przypadku system popełniałby błędy pierwszego rodzaju, odnajdując poszukiwane obiekty na zdjęciach, które mogłyby ich wcale nie zawierać. Ataki przez zatrucie mogą też być połączone z atakami przez unikanie: przykładowo, w przypadku systemów wymagających, by na zdjęciu znalazła się jakaś twarz i docinających do niej zdjęcie, założenie maseczki z ,,zatrutym'' wzorem skutkowałoby jednoczesnym uniknięciem wykrycia właściwej twarzy na zdjęciu i zapamiętaniem materiału błędnego z punktu widzenia człowieka\cite{MacDonald19}. (KOMENTARZ: tutaj też będzie twarzowe zdjęcie, ale ze względu na braki drukarkowe pojawi się później.)
 
 \section{Algorytm Violi-Jonesa}
 
