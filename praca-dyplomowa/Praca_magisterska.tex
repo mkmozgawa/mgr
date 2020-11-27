@@ -242,13 +242,32 @@ Rzeczy które tu można ująć to np.
 
 Ilu autorów, tyle wstępów\ldots{} Nie traktuj powyższych elementów jako obowiązkowe.
 
-\chapter{Rozdział o systemach przetwarzania obrazu nieopartych o głębokie uczenie maszynowe}%Na końcu tytułów rozdziałów i podrozdziałów nie stawiamy kropek.
+\chapter{Systemy przetwarzania obrazu}%Na końcu tytułów rozdziałów i podrozdziałów nie stawiamy kropek.
 
 (KOMENTARZ W tym rozdziale opisano systemy przetwarzania obrazu nieoparte o głębokie uczenie maszynowe -- czyli w szczególności te na bazie algorytmu Viola-Jonesa oraz oparte o histogramy zorientowanych gradientów.
 Czy w tym rozdziale warto też od razu opisywać ataki? Na razie to robię, ale być może warto będzie zrobić jakieś przetasowanie. Czas pokaże.
 Czego NIE opisuję w tym rozdziale (póki co): dlaczego redukować w ogóle wymiarowość obrazów ("przekleństwo wymiarowości")).
 Co będę opisywać w tym rozdziale, ale będzie obejmować co najmniej te dwa algorytmy, więc nie opisuję dla każdego z osobna: jak wygląda pipeline'a przetwarzania danych (ekstrakcja cech-deskryptorów, trenowanie modelu, testowanie modelu)).
 
+%
+%
+%
+%
+%
+%
+%
+%
+% HOG
+%
+%
+%
+%
+%
+%
+%
+%
+%
+%
 \section{Histogramy zorientowanych gradientów}
 
 Histogramy zorientowanych gradientów (ang. \textit{histograms of oriented gradients}, dalej: HOG) to deskryptory pozwalające na opisanie zawartości danego obrazu za pomocą wielkości i orientacji gradientów. Technika ta pozwala na redukcję wymiarowości obrazu oraz zniwelowanie wpływu lokalnych różnic na całość deskryptora\cite{DalalTriggs05Hog}.
@@ -313,6 +332,71 @@ Wytrenowany klasyfikator może zostać następnie zastosowany do wykrywania dane
   \end{minipage}
 \end{figure}
 
+%
+%
+%
+%
+%
+%
+% Viola-Jones
+%
+%
+%
+%
+%
+
+\section{Algorytm Violi-Jonesa}
+
+Tutaj będzie opisanych na kolejnych kilka stron algorytm Violi i Jonesa. 
+
+%
+%
+%
+%
+%
+%
+% CNNs
+%
+%
+%
+%
+%
+
+\section{Konwolucyjne sieci neuronowe}
+
+Tutaj będzie opis CNNów.
+
+%
+%
+%
+%
+%
+% ROZDZIAŁ DRUGI
+%
+%
+%
+%
+%
+
+\chapter{Taksonomia ataków na uczenie maszynowe}
+
+Ten rozdział zajmuje się opisem taksonomii ataków, w oparciu o NISTa (https://nvlpubs.nist.gov/nistpubs/ir/2019/NIST.IR.8269-draft.pdf) oraz "Hakowanie uczenia maszynowego".
+
+%
+%
+%
+%
+%
+% ROZDZIAŁ TRZECI
+%
+%
+%
+%
+%
+
+\chapter{Praktyczne metody ataków na systemy przetwarzania obrazu}
+
+
 \subsection{Metody ataku}
 Ze względu na ich stosunkowo niski poziom skomplikowania i wysoką intepretowalność w porównaniu do modeli opartych o głębokie uczenie maszynowe istnieją metody pozwalające na wizualizację deskryptorów HOG. Metody te, poza ułatwianiem pracy nad debugowaniem istniejących modeli, mogą także służyć do opracowywania metod ataku. Przegląd istniejącej literatury wskazuje, że rozwiązania oparte o HOG są podatne na dwa typy ataków: ataki przez unikanie (ang. \textit{evasion attacks}) oraz ataki przez zatrucie (ang. \textit{poisoning attacks})\cite{Hoggles, MacDonald19}. (KOMENTARZ: szersza charakterystyka typów ataków oparta o proponowaną przez NIST nomenkulaturę znajdzie się gdzieś we wstępnym rozdziale.)
 
@@ -334,9 +418,19 @@ W przypadku HOG ataki przez unikanie polegają na przesłonięciu w obiekcie fra
 \paragraph{Ataki przez zatrucie.}
 Innym sposobem na przechytrzenie systemu przetwarzania obrazu jest zwizualizowanie wyuczonego detektora (jeśli mamy do niego dostęp) albo histogramu gradientów dla pozytywnego przykładu, a następnie użycie go do ,,zatrucia'' materiału testowego poprzez np. zapozowanie w ubraniu z nadrukiem pokazującym tę wizualizację. W takim przypadku system popełniałby błędy pierwszego rodzaju, odnajdując poszukiwane obiekty na zdjęciach, które mogłyby ich wcale nie zawierać. Ataki przez zatrucie mogą też być połączone z atakami przez unikanie: przykładowo, w przypadku systemów wymagających, by na zdjęciu znalazła się jakaś twarz i docinających do niej zdjęcie, założenie maseczki z ,,zatrutym'' wzorem skutkowałoby jednoczesnym uniknięciem wykrycia właściwej twarzy na zdjęciu i zapamiętaniem materiału błędnego z punktu widzenia człowieka\cite{MacDonald19}. (KOMENTARZ: tutaj też będzie twarzowe zdjęcie, ale ze względu na braki drukarkowe pojawi się później.)
 
-\section{Algorytm Violi-Jonesa}
+%
+%
+%
+%
+%
+% ROZDZIAŁ CZWARTY ?
+%
+%
+%
+%
+%
 
-Tutaj będzie opisanych na kolejnych kilka stron algorytm Violi i Jonesa. 
+\chapter{Atak na popularne systemy wykrywania twarzy}
 
 \newpage
 % Dodanie wpisu Bibliografia do Spisu Treści.
