@@ -347,15 +347,48 @@ Wytrenowany klasyfikator może zostać następnie zastosowany do wykrywania dane
 
 \section{Metoda Viola-Jonesa}
 
-Metoda Viola-Jonesa to czteroetapowy framework pozwalający na wykrywanie określonych cech na zdjęciach, na przykład odnajdowanie na nich twarzy ludzi, określonych zwierząt czy obiektów. Celem tej sekcji jest opisanie jego poszczególnych etapów: wyboru cech Haara, stworzenia obrazu integralnego (ang. \textit{Integral Image}), budowy klasyfikatora w oparciu o zmodyfikowaną wersję algorytmu AdaBoost i wreszcie konstrukcji kaskady klasyfikatorów.
+Metoda Viola-Jonesa to czteroetapowy framework pozwalający na wykrywanie określonych cech na zdjęciach, na przykład odnajdowanie na nich twarzy ludzi, określonych zwierząt czy obiektów. Celem tej sekcji jest opisanie jego poszczególnych etapów: wyboru cech Haara, stworzenia obrazu integralnego (ang. \textit{Integral Image}), budowy klasyfikatora w oparciu o zmodyfikowaną wersję algorytmu AdaBoost i wreszcie konstrukcji kaskady klasyfikatorów.\cite{ViolaJones01}
 
 \subsection{Wybór cech Haara}
+Podstawę klasyfikacji w metodzie Viola-Jonesa stanowią prostokątne cechy, czyli grupy pikseli o określonym ułożeniu. Cechy te, ze względu na podobieństwo do falek Haara, nazywane są cechami Haara (ang. \textit{Haar-like features}). Metoda zaproponowana przez autorów zakłada skorzystanie z trzech rodzajów cech (patrz Rysunek \ref{fig:haar_features}):
+\begin{itemize}
+	\item dwuprostokątnej cechy (ang. \textit{two-rectangle feature}), czyli różnicy między sumami pikseli w dwóch prostokątach o tym samym rozmiarze i kształcie, przylegających do siebie w pionie lub w poziomie,
+	\item trójprostkątnej cechy (ang. \textit{three-rectangle feature}), czyli różnicy sumy dwóch zewnętrznych prostokątów i środkowego prostokąta,
+	\item czteroprostokątnej cechy (ang. \textit{four-rectangle feature}), czyli różnicy między parami prostokątów znajdującymi się na poprzecznej.
+\end{itemize}
+
+W praktyce cechy Haara przekazują informacje dotyczące kontrastów między prostokątnymi grupami pikseli. Pozwala to wyznaczyć obszary, które są względem siebie jaśniejsze lub ciemniejsze. W przypadku wykrywania twarzy, cechy mogą odpowiadać różnicom w układaniu się światła i cienia na twarzy, na przykład między mostkiem nosa a oczami albo między oczami a policzkami.
+
+\begin{figure}[!tbp]
+  \centering
+  \begin{minipage}[b]{0.9\textwidth}
+    \includegraphics[width=\textwidth]{pictures/Haar_features.png}
+    \caption{Cechy Haara: (A) i (B) to cechy dwuprostokątne, (C) ~--- cecha trójprostokątna, (D) ~--- czteroprostokątna.\cite{ViolaJones01}}
+    \label{fig:haar_features}
+  \end{minipage}
+\end{figure}
 
 \subsection{Tworzenie obrazu integralnego}
+
+W celu przyspieszenia wyliczeń wartości cech Haara używa się pośredniej formy obrazu, czyli tzw. obrazu integralnego (ang. \textit{integral image}). Jego wartość w pozycji o współrzędnych \textit{x, y} zawiera sumę pikseli ponad i na lewo od \textit{x, y}, włącznie z samymi \textit{x, y}:
+\begin{align}
+ii(x,y) = \sum_{x'\leqslant x, y' \leqslant y} i(x', y'),
+\end{align}
+gdzie $ii(x,y)$ to obraz integralny, a $i(x,y)$ to oryginalny obraz. Korzystając z rekurencji możliwe jest wyliczenie obrazu integralnego w ramach pojedyńczego przejścia przez oryginalny obraz. Następnie, używając obrazu integralnego, obliczać można sumy pikseli w określonych prostokątach korzystając z poprzedzających je obszarów. Metoda ta została pokazana w ilustracji \ref{fig:integral_image_sums}.
+
+\begin{figure}[!tbp]
+  \centering
+  \begin{minipage}[b]{0.4\textheight}
+    \includegraphics[width=\textwidth]{pictures/integral_image_sums.png}
+  \end{minipage}
+  \caption{Sumę pikseli w prostokącie D można wyliczyć w odniesieniu do do pól A, B i C. Wartość w punkcie 1 jest równa sumie pikseli w prostokącie A, w punkcie 2 ~--- A + B, w punkcie 3 ~--- A + C, w punkcie 4 ~--- A + B + C + D. Wobec tego suma D wynosi D + A - (B + C).\cite{ViolaJones01}}
+  \label{fig:integral_image_sums}
+\end{figure}
 
 \subsection{Budowa klasyfikatora}
 
 \subsection{Konstrukcja kaskady klasyfikatorów}
+
 %
 %
 %
