@@ -347,7 +347,7 @@ Wytrenowany klasyfikator może zostać następnie zastosowany do wykrywania dane
 
 \section{Metoda Viola-Jonesa}
 
-Metoda Viola-Jonesa to czteroetapowy framework pozwalający na wykrywanie określonych cech na zdjęciach, na przykład odnajdowanie na nich twarzy ludzi, określonych zwierząt czy obiektów. Celem tej sekcji jest opisanie jego poszczególnych etapów: wyboru cech Haara, stworzenia obrazu integralnego (ang. \textit{Integral Image}), budowy klasyfikatora w oparciu o zmodyfikowaną wersję algorytmu AdaBoost i wreszcie konstrukcji kaskady klasyfikatorów.\cite{ViolaJones01}
+Metoda Viola-Jonesa to czteroetapowy framework pozwalający na wykrywanie określonych cech na zdjęciach, na przykład odnajdowanie na nich twarzy ludzi, określonych zwierząt czy obiektów. Celem tej sekcji jest opisanie jego poszczególnych etapów: wyboru cech Haara, stworzenia obrazu integralnego (ang. \textit{Integral Image}), wyboru cech do klasyfikatora w oparciu o zmodyfikowaną wersję algorytmu AdaBoost i wreszcie konstrukcji kaskady klasyfikatorów.\cite{ViolaJones01}
 
 \subsection{Wybór cech Haara}
 Podstawę klasyfikacji w metodzie Viola-Jonesa stanowią prostokątne cechy, czyli grupy pikseli o określonym ułożeniu. Cechy te, ze względu na podobieństwo do falek Haara, nazywane są cechami Haara (ang. \textit{Haar-like features}). Metoda zaproponowana przez autorów zakłada skorzystanie z trzech rodzajów cech (patrz Rysunek \ref{fig:haar_features}):
@@ -358,6 +358,8 @@ Podstawę klasyfikacji w metodzie Viola-Jonesa stanowią prostokątne cechy, czy
 \end{itemize}
 
 W praktyce cechy Haara przekazują informacje dotyczące kontrastów między prostokątnymi grupami pikseli. Pozwala to wyznaczyć obszary, które są względem siebie jaśniejsze lub ciemniejsze. W przypadku wykrywania twarzy, cechy mogą odpowiadać różnicom w układaniu się światła i cienia na twarzy, na przykład między mostkiem nosa a oczami albo między oczami a policzkami.
+
+Detektor zastosowany przez autorów ma 24x24 piksele, co w przeliczeniu daje zbiór ponad 180000 cech różnych rodzajów i wymiarów. Same operacje arytmetyczne potrzebne do wyliczenia tych cech stanowić mogą spore wyzwanie (jeszcze większe stanowiły na początku lat 2000, gdy algorytm powstawał), dlatego autorzy opracowali metodę przedstawioną w kolejnej sekcji: wyliczanie formy pośredniej w postaci obrazu integralnego. 
 
 \begin{figure}[!tbp]
   \centering
@@ -370,7 +372,7 @@ W praktyce cechy Haara przekazują informacje dotyczące kontrastów między pro
 
 \subsection{Tworzenie obrazu integralnego}
 
-W celu przyspieszenia wyliczeń wartości cech Haara używa się pośredniej formy obrazu, czyli tzw. obrazu integralnego (ang. \textit{integral image}). Jego wartość w pozycji o współrzędnych \textit{x, y} zawiera sumę pikseli ponad i na lewo od \textit{x, y}, włącznie z samymi \textit{x, y}:
+W celu usprawnienia wyliczeń wartości cech Haara używa się pośredniej formy obrazu, czyli tzw. obrazu integralnego (ang. \textit{integral image}). Jego wartość w pozycji o współrzędnych \textit{x, y} zawiera sumę pikseli ponad i na lewo od \textit{x, y}, włącznie z samymi \textit{x, y}:
 \begin{align}
 ii(x,y) = \sum_{x'\leqslant x, y' \leqslant y} i(x', y'),
 \end{align}
@@ -385,9 +387,27 @@ gdzie $ii(x,y)$ to obraz integralny, a $i(x,y)$ to oryginalny obraz. Korzystają
   \label{fig:integral_image_sums}
 \end{figure}
 
-\subsection{Budowa klasyfikatora}
+Skorzystanie z obrazu integralnego pozwala na dużo sprawniejsze wyznaczenie cech, na postawie których zostanie zbudowany klasyfikator.
+
+\subsection{Wybór cech}
+
+Jak wcześniej wspomniano, dla zastosowanego detektora 24x24 piksele uzyskuje się zbiór ponad 180000 cech o różnej użyteczności. Żeby wyznaczyć tę użyteczność i wybrać z tego zbioru cechy przydatne do wykrycia określonego typu obiektu korzysta się ze zmodyfikowanej wersji algorytmu AdaBoost. Tylko użyteczne cechy trafiają później do klasyfikatora. Cechy te w pojedynkę mogą być stosunkowo słabymi predyktorami wyniku klasyfikacji, dlatego taki rodzaj uczenia nosi też nazwę algorytmu słabych klasyfikatorów. Eksperymenty autorów wykazały, że stosunkowo niewielka liczba takich cech jest w stanie stworzyć efektywny klasyfikator i dlatego głównym wyzwaniem jest odnalezienie owych cech.
+Stworzona przez autorów modyfikacja AdaBoost ma za zadanie wybrać cechy dające najniższy wskaźnik błędów. Dla każdej z cech, klasyfikator  ustala optymalny próg funkcji klasyfikującej, taki że minimalna liczba przykładów treningowych zostaje zaklasyfikowana niepoprawnie:
+
+\begin{align}
+h_{j}(x) = \left.
+	\begin{cases}
+		x  & \text{jeśli } p_{j}f_{j}(x) \leq p_{j}\theta_{j} \\
+		-x & \text{w innym przypadku}
+	\end{cases}
+	\right.
+\end{align}
+
+gdzie $x$ to 24x24-pikselowe podokno obrazu, $h_{j}(x)$ - klasyfikator, $f_{j}$ - cecha, $\theta_{j}$ - próg i $p_{j}$ - znak liczby. Dokładniejszy opis zmodyfikowanego algorytmu AdaBoost znajduje się w algorytmie x. W praktyce żadna cecha nie jest w stanie w pojedynkę dokonać klasyfikacji z odpowiednio dużą dokładnością. W opisywanym przypadku współczynniki błędu cech wybranych w pierwszych rundach wynosiły między 0,1 a 0,3, później dochodząc do 0,4 i 0,5 (czyli aż do wyniku losowego rzutu monetą).
 
 \subsection{Konstrukcja kaskady klasyfikatorów}
+
+Wstępne eksperymenty autorów wykazały, że klasyfikator do wykrywania twarzy \textit{en face} (ang. \textit{frontal face classifier}), stworzony z 200 cech, miał współczynnik wykrycia twarzy na poziomie 95\%, jednocześnie popełniając błędy pierwszego rodzaju dla 1 na 14084 zdjęć. Taki klasyfikator potrzebował mniej niż sekundę na analizę obrazu wielkości 384 na 288 pikseli. Był to wynik dobry (szczególnie ze względu na szybkość działania), ale nie dostatecznie dobry do niektórych zastosowań praktycznych.
 
 %
 %
