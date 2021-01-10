@@ -402,21 +402,13 @@ h_{j}(x) = \left.
 
 gdzie $x$ to 24x24-pikselowe podokno obrazu, $h_{j}(x)$ - klasyfikator, $f_{j}$ - cecha, $\theta_{j}$ - próg i $p_{j}$ - znak liczby. Dokładniejszy opis zmodyfikowanego algorytmu AdaBoost znajduje się w algorytmie x. W praktyce żadna cecha nie jest w stanie w pojedynkę dokonać klasyfikacji z odpowiednio dużą dokładnością. W opisywanym przypadku współczynniki błędu cech wybranych w pierwszych rundach wynosiły między 0,1 a 0,3, później dochodząc do 0,4 i 0,5 (czyli aż do wyniku losowego rzutu monetą).\cite{ViolaJones01}
 
-\begin{figure}[!tbp]
-\noindent\fbox{\begin{minipage}{15em}
-Dane wejściowe: przykładowe obrazy $(x_{1}, y_{1}), ..., (x_{n}, y_{n})$, gdzie $y_{i}$-ty element jest równy 1 (przykład pozytywny) lub 0 (przykład negatywny)
-
-\end{minipage}}
-\caption{Zmodyfikowany AdaBoost}
-\end{figure}
-
 \subsection{Konstrukcja kaskady klasyfikatorów}
 
 Celem konstrukcji kaskady klasyfikatorów jest stworzenie systemu, który łączy wyższą skuteczność i krótszy czas przetwarzania obrazów. Autorzy posłużyli się mechanizmem, w którym klasyfikatory ustawia się w odpowiedniej kolejności. Najpierw umieszcza się prostsze klasyfikatory, które odrzucają jak najwięcej negatywnych przypadków (akceptując przy tym potencjalną dużą liczbę błędów pierwszego rodzaju), a następnie stosuje się bardziej złożone klasyfikatory, które służą odsianiu błędów pierwszego rodzaju. Finalnie uzyskuje się drzewo decyzyjne — kaskadę, ang. \textit{cascade} — o specyficznym, "zdegenerowanym" kształcie: każdy węzeł nie będący węzłem końcowym ma dwie gałęzie, przy czym tylko jedna z tych gałęzi ma swoje dwie gałęzie, itd.
 
 Kolejność umieszczenia klasyfikatorów oraz ich liczba są wyznaczane w procesie trenowania kaskady. Ze względu na trudność ułożenia odpowiednich klasyfikatorów w odpowiedniej kolejności przy jednoczesnym spełnieniu założeń dotyczących skuteczności i wydajności (im więcej cech ma klasyfikator, tym jest dokładniejszy i mniej wydajny) stosuje się prostą heurystykę, żeby otrzymać "dość dobrą" kaskadę. Początkowo określa się finalną pożądaną dokładność klasyfikatora oraz akceptowalny odsetek błędów pierwszego rodzaju. Na każdym etapie kaskady dany klasyfikator ma za zadanie redukcję liczby błędów pierwszego rzędu (co jednocześnie może zmniejszać dokładność). Na początku etapu wybiera się dwie wartości docelowe: minimum o jakie chce się zmniejszyć liczbę błędów pierwszego rodzaju oraz maksimum o jakie chce się zmniejszyć dokładność klasyfikatora. Na podstawie tych wytycznych trenuje się kaskadę, dobierając cechy do momentu uzyskania wybranych wartości. Klasyfikator, który odniósł sukces w tym etapie jest dopisywany do całej kaskady, a trening przechodzi do kolejnego etapu z nowymi wartościami docelowymi. Etapy są dodawane, dopóki nie stworzy się kaskady o parametrach odpowiadających początkowym wymaganiom.
 
-W eksperymentach autorów kompletna kaskada klasyfikatorów, używana do wykrywania twarzy \textit{en face} (and. \textit{frontal face classifier}), składała się z 38 etapów i 6061 cech. Na ówczesnym sprzęcie (procesor Pentium III 700 MHz) pozwalał on na kilkanaście razy szybsze przetwarzanie obrazów niż istniejące rozwiązania, nie odbiegając od nich negatywnie odsetkiem błędów pierwszego rodzaju.\cite{ViolaJones01}
+W eksperymentach autorów kompletna kaskada klasyfikatorów, używana do wykrywania twarzy \textit{en face} (and. \textit{frontal face classifier}), składała się z 38 etapów i 6061 cech. Na ówczesnym sprzęcie (procesor Pentium III 700 MHz) pozwalała ona na kilkanaście razy szybsze przetwarzanie obrazów niż istniejące rozwiązania, nie odbiegając od nich negatywnie odsetkiem błędów pierwszego rodzaju.\cite{ViolaJones01}
 
 %
 %
@@ -435,7 +427,32 @@ W eksperymentach autorów kompletna kaskada klasyfikatorów, używana do wykrywa
 
 Konwolucyjne sieci neuronowe (ang. \textit{convolutional neural networks}, także: \textit{CNN(s)}) to specjalistyczny rodzaj sieci neuronowych, których zadaniem jest przetwarzanie danych o określonej strukturze (zwykle jest to 1- lub 2-wymiarowa siatka), np. szeregów czasowych czy obrazów. Ich nazwa bierze się z tego, że co najmniej jedna z warstw w CNN musi zawierać warstwę konwolucyjną, czyli dokonywać przekształcenia danych poprzez zastosowanie konwolucji.\cite{Goodfellow-et-al-2016} Celem tej sekcji jest opisanie teorii stojącej za konwolucyjnymi sieciami neuronowymi i pojęć im towarzyszących, takich jak metoda gradientu prostego, propagacja wsteczna i różne rodzaje warstw występujących w CNNach.
 
+\subsection{Metoda gradientu prostego}
 
+Wiele algorytmów używanych w głębokim uczeniu maszynowym korzysta z metod optymalizacji numerycznej, czyli odnajdowania minimum lub maksimum danej funkcji $f(x)$ poprzez manipulowanie argumentem funkcji. Jedną z takich metod jest metoda gradientu prostego, korzystająca z wartości pochodnej z $f(x)$ w danym punkcie do określenia "w którą stronę" należy przesunąć $x$ w celu zbliżenia się do lokalnego minimum funkcji $f(x)$. W praktyce ze względu na ogromną przestrzeń, jaką należałoby przeszukać w celu znalezienia optymalnego $x$, liczba testów kolejnych jego wartości musi być ograniczona. Analogią dla tego procesu jest schodzenie w dół zbocza z perspektywą zapadającego zmroku: podróżujący musi wtedy podążać w kierunku obniżania się zbocza, ale nie może się też zatrzymywać za często w celu pomiaru, bo zastanie go zmrok.
+
+\begin{figure}[!tbp]
+  \centering
+  \begin{minipage}[b]{0.5\textheight}
+    \includegraphics[width=\textwidth]{pictures/gradient_descent.png}
+  \end{minipage}
+  \caption{Ilustracja działania metody gradientu prostego. Pochodna funkcji $f$ w punkcie $x$ jest używana do określania kształtu funkcji.\cite{Goodfellow-et-al-2016}}
+  \label{fig:gradient_descent}
+\end{figure}
+
+Dodatkowym problemem w poszukiwaniu minimów (maksimów) funkcji jest to, że może mieć ona wiele lokalnych minimów, jak również punkty siodłowe, nieodpowiadających globalnym minimom (maksimom). Jest to częsty problem w funkcjach używanych w uczeniu maszynowym. Dlatego też dobrą praktyką jest poszukiwanie "dość dobrych" wartości $f$ — wystarczająco niskich (wysokich) dla osiągnięcia pożądanej dokładności, ale niekoniecznie stanowiących minima (maksima) w znaczeniu formalnym. Przykład pokazano na Rysunku \ref{fig:approximate_minimization}. W praktyce funkcje używane w głębokim uczeniu maszynowym przyjmują wiele zmiennych, tak więc "dość dobre" wartości są wyszukiwane z użyciem pochodnych cząstkowych. Gradient funkcji $f$ jest wówczas rozumiany jako wektor zawierający wszystkie pochodne cząstkowe i oznaczany przez $\nabla_{x}f(x)$.\cite{Goodfellow-et-al-2016}
+
+
+\begin{figure}!tbp]
+  \centering
+  \begin{minipage}[b]{0.5\textheight}
+    \includegraphics[width=\textwidth]{pictures/approximate_minimization.png}
+  \end{minipage}
+  \caption{Odnajdywanie "wystarczająco dobrej" wartości $x$. Choć wartość znaleziona (np. środkowa) może nie być globalnym minimum (po lewej), to będąc dostatecznie bliską globalnemu minimum jest wystarczająca. Niedostatecznie dobra jest wartość po prawej (lokalne minimum), zbyt odbiegająca od globalnego minimum.\cite{Goodfellow-et-al-2016}}
+  \label{fig:approximate_minimization}
+\end{figure}
+
+\subsection{Propagacja wsteczna}
 
 %
 %
