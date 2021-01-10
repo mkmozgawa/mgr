@@ -427,9 +427,17 @@ W eksperymentach autorów kompletna kaskada klasyfikatorów, używana do wykrywa
 
 Konwolucyjne sieci neuronowe (ang. \textit{convolutional neural networks}, także: \textit{CNN(s)}) to specjalistyczny rodzaj sieci neuronowych, których zadaniem jest przetwarzanie danych o określonej strukturze (zwykle jest to 1- lub 2-wymiarowa siatka), np. szeregów czasowych czy obrazów. Ich nazwa bierze się z tego, że co najmniej jedna z warstw w CNN musi zawierać warstwę konwolucyjną, czyli dokonywać przekształcenia danych poprzez zastosowanie konwolucji.\cite{Goodfellow-et-al-2016} Celem tej sekcji jest opisanie teorii stojącej za konwolucyjnymi sieciami neuronowymi i pojęć im towarzyszących, takich jak metoda gradientu prostego, propagacja wsteczna i różne rodzaje warstw występujących w CNNach.
 
-\subsection{Metoda gradientu prostego}
+\subsection{Metoda spadku wzdłuż gradientu. Stochastyczny spadek wzdłuż gradientu}
 
-Wiele algorytmów używanych w głębokim uczeniu maszynowym korzysta z metod optymalizacji numerycznej, czyli odnajdowania minimum lub maksimum danej funkcji $f(x)$ poprzez manipulowanie argumentem funkcji. Jedną z takich metod jest metoda gradientu prostego, korzystająca z wartości pochodnej z $f(x)$ w danym punkcie do określenia "w którą stronę" należy przesunąć $x$ w celu zbliżenia się do lokalnego minimum funkcji $f(x)$. W praktyce ze względu na ogromną przestrzeń, jaką należałoby przeszukać w celu znalezienia optymalnego $x$, liczba testów kolejnych jego wartości musi być ograniczona. Analogią dla tego procesu jest schodzenie w dół zbocza z perspektywą zapadającego zmroku: podróżujący musi wtedy podążać w kierunku obniżania się zbocza, ale nie może się też zatrzymywać za często w celu pomiaru, bo zastanie go zmrok.
+Wiele algorytmów używanych w głębokim uczeniu maszynowym korzysta z metod optymalizacji numerycznej, czyli odnajdowania minimum lub maksimum danej funkcji $f(x)$ poprzez manipulowanie argumentem funkcji. Jedną z takich metod jest metoda spadku wzdłuż gradientu (ang. \textit{gradient descent}), korzystająca z wartości pochodnej z $f(x)$ w danym punkcie do określenia ,,w którą stronę'' należy przesunąć $x$ w celu zbliżenia się do lokalnego minimum funkcji $f(x)$. Dla jednowymiarowych (jednoargumentowych) funkcji, gradient można wyznaczyć korzystając z zależności:
+
+\begin{align}
+\frac{df(x)}{dx} = \left.
+	\lim_{h \to 0} \frac{f(x+h)-f(x)}{h}
+	\right.
+\end{align}
+
+gdzie $h$ to wielkość wykonywanego ,,kroku'' (nazywana też \textit{tempem uczenia}, ang. \textit{leaning rate}). W praktyce ze względu na ogromną przestrzeń, jaką należałoby przeszukać w celu znalezienia optymalnego $x$, liczba testów kolejnych jego wartości musi być ograniczona, dlatego pochodną z używanej funkcji wyznacza się zazwyczaj analitycznie (korzystając z rachunku różniczkowego), a poprawność wyprowadzenia sprawdza się metodą numeryczną na ograniczonym zbiorze danych. Analogią dla tego procesu jest schodzenie w dół zbocza z perspektywą zapadającego zmroku: podróżujący musi wtedy podążać w kierunku obniżania się zbocza, ale nie może się też zatrzymywać za często w celu pomiaru, bo zastanie go zmrok. \cite{StanfordCNN}
 
 \begin{figure}[!tbp]
   \centering
@@ -440,17 +448,22 @@ Wiele algorytmów używanych w głębokim uczeniu maszynowym korzysta z metod op
   \label{fig:gradient_descent}
 \end{figure}
 
-Dodatkowym problemem w poszukiwaniu minimów (maksimów) funkcji jest to, że może mieć ona wiele lokalnych minimów, jak również punkty siodłowe, nieodpowiadających globalnym minimom (maksimom). Jest to częsty problem w funkcjach używanych w uczeniu maszynowym. Dlatego też dobrą praktyką jest poszukiwanie "dość dobrych" wartości $f$ — wystarczająco niskich (wysokich) dla osiągnięcia pożądanej dokładności, ale niekoniecznie stanowiących minima (maksima) w znaczeniu formalnym. Przykład pokazano na Rysunku \ref{fig:approximate_minimization}. W praktyce funkcje używane w głębokim uczeniu maszynowym przyjmują wiele zmiennych, tak więc "dość dobre" wartości są wyszukiwane z użyciem pochodnych cząstkowych. Gradient funkcji $f$ jest wówczas rozumiany jako wektor zawierający wszystkie pochodne cząstkowe i oznaczany przez $\nabla_{x}f(x)$.\cite{Goodfellow-et-al-2016}
+Dodatkowym problemem w poszukiwaniu minimów (maksimów) funkcji jest to, że może mieć ona wiele lokalnych minimów (maksimów), jak również punkty siodłowe, nieodpowiadających globalnym minimom (maksimom). Jest to częsty problem w funkcjach używanych w uczeniu maszynowym. Dlatego też dobrą praktyką jest poszukiwanie ,,dość dobrych'' wartości $f$ — wystarczająco niskich (wysokich) dla osiągnięcia pożądanej dokładności, ale niekoniecznie stanowiących minima (maksima) w znaczeniu formalnym. Przykład pokazano na Rysunku \ref{fig:approximate_minimization}.\cite{Goodfellow-et-al-2016}
 
-
-\begin{figure}!tbp]
+\begin{figure}[!tbp]
   \centering
   \begin{minipage}[b]{0.5\textheight}
     \includegraphics[width=\textwidth]{pictures/approximate_minimization.png}
   \end{minipage}
-  \caption{Odnajdywanie "wystarczająco dobrej" wartości $x$. Choć wartość znaleziona (np. środkowa) może nie być globalnym minimum (po lewej), to będąc dostatecznie bliską globalnemu minimum jest wystarczająca. Niedostatecznie dobra jest wartość po prawej (lokalne minimum), zbyt odbiegająca od globalnego minimum.\cite{Goodfellow-et-al-2016}}
+  \caption{Odnajdywanie ,,wystarczająco dobrej'' wartości $x$. Choć wartość znaleziona (np. środkowa) może nie być globalnym minimum (po lewej), to będąc dostatecznie bliską globalnemu minimum jest wystarczająca. Niedostatecznie dobra jest wartość po prawej (lokalne minimum), zbyt odbiegająca od globalnego minimum.\cite{Goodfellow-et-al-2016}}
   \label{fig:approximate_minimization}
 \end{figure}
+
+W praktyce funkcje używane w głębokim uczeniu maszynowym mogą przyjmować wiele zmiennych, tak więc ,,dość dobre'' wartości są też wyszukiwane z użyciem pochodnych cząstkowych. Gradient funkcji $f$ jest wówczas rozumiany jako wektor zawierający wszystkie pochodne cząstkowe i oznaczany przez $\nabla_{x}f(x)$. Dodatkowo wprowdza się pojęcie pochodnej kierunkowej w kierunku $u$, wyznaczającej jak funkcja $f$ zmienia się w kierunku wektora $u$. Pochodna kierunkowa pozwala na znalezienie kierunku, w którym wartość funkcji $f$ spada najszybciej. Można to porównać do oceniania, patrząc z punktu na zboczu w różne strony, w którą stronę należy iść, aby zejść na dół (albo podejść w górę) jak najkrótszą drogą. Warto zauważyć ponownie, że (jak w przypadku HOG) gradient wskazuje na kierunek wzrostu funkcji, a zatem do odnalezienia minimum należy go odejmować od istniejących wag. \cite{Goodfellow-et-al-2016,StanfordCNN}
+
+Ze względu na to, że pełny zbiór danych podawanych do treningu może być bardzo obszerny, przeprowadzanie wyliczeń dla całego zbioru może być bardzo kosztowne obliczeniowo. Stąd wiele algorytmów w głębokim uczeniu maszynowym opiera się o stochastyczny spadek wzdłuż gradientu (ang. \textit{Stochastic Gradient Descent}, SGD), w którym zamiast operować przez wszystkie iteracje na wszystkich zbiorach wybiera się niewielki podzbiór danych (ang. \textit{minibatch}). Następnie przy każdej kolejnej iteracji algorytmu losuje się nową próbkę, uzyskując w ten sposób pewne przybliżenie sumy wszystkich danych. Porównanie prostego i stochastycznego spadku wzdłuż gradienty przedstawiono w kodzie źródłowym poniżej.
+
+\lstinputlisting[language=Python, label={lst:gd_sgd} captionpos=b, belowcaptionskip=4pt, caption={Prosty spadek wzdłuż gradientu i stochastyczny spadek wzdłuż gradientu. Pseudokod}]{gd_sgd.py}
 
 \subsection{Propagacja wsteczna}
 
